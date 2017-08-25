@@ -26,7 +26,7 @@ from imagenet_utils import _obtain_input_shape
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
-data = np.load('data_0nan.npy').item()
+data = np.load('data_0nan.npy.zip')['data_0nan'].item()
 data2_x = []
 data2_y = []
 data2_name = []
@@ -49,7 +49,7 @@ def make_array(str):
             temp[i] = [0,0,0,0,1]
     return temp
 
-for i in sorted(data):
+for i in data:
     if len(data[i][0]) < 100:
         data2_x += [make_array(data[i][1]),]
         data2_y += [data[i][2],]
@@ -59,14 +59,17 @@ print (len(data2_y))
 #data2_x = np.array(data2_x)
 # Create some wrappers for simplicity
 epsilon = 1e-3
-def conv2d(x, W, b, strides=1,F=False):
-    # Conv2D wrapper, with bias and relu activation
-    x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding='SAME')
-    x = tf.nn.bias_add(x, b)
+def batch_normalization(x):
     mean,var = tf.nn.moments(x,[1,2])
     scale = tf.Variable(tf.ones([x.shape[-1]]))
     beta = tf.Variable(tf.zeros([x.shape[-1]]))
     x = tf.nn.batch_normalization(x,mean,var,beta,scale,epsilon)
+    return x
+def conv2d(x, W, b, strides=1,F=False):
+    # Conv2D wrapper, with bias and relu activation
+    x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding='SAME')
+    x = tf.nn.bias_add(x, b)
+    x = batch_normalization(x)
     #x = tf.
     if F==False:
         return tf.nn.relu(x)
@@ -74,8 +77,8 @@ def conv2d(x, W, b, strides=1,F=False):
         return tf.nn.relu(x),x
 
 # Parameters
-learning_rate = 0.01
-training_epochs = 50
+learning_rate = 0.001
+training_epochs = 300
 batch_size = 100
 display_step = 1
 n_classes =5
@@ -105,7 +108,11 @@ weights = {
     'wd1': tf.Variable(tf.random_normal([7*7*64, 1024])),
     # 1024 inputs, 10 outputs (class prediction)
     'out': tf.Variable(tf.random_normal([1024, n_classes])),
-    'out2': tf.Variable(tf.random_normal([5,5,64, 1]))
+    'outa': tf.Variable(tf.random_normal([5,5,64, 32])),
+    'outb': tf.Variable(tf.random_normal([5,5,32, 16])),
+    'outc': tf.Variable(tf.random_normal([5,5,16, 8])),
+    'out2': tf.Variable(tf.random_normal([5,5,8, 1]))
+    
 }
 
 biases = {
@@ -115,22 +122,30 @@ biases = {
     'bc3b': tf.Variable(tf.random_normal([64])),
     'bd1': tf.Variable(tf.random_normal([1024])),
     'out': tf.Variable(tf.random_normal([n_classes])),
+    'outa': tf.Variable(tf.random_normal([32])),
+    'outb': tf.Variable(tf.random_normal([16])),
+    'outc': tf.Variable(tf.random_normal([8])),
     'out2': tf.Variable(tf.random_normal([1]))
 }
 
 # construct model
-conv1 = conv2d(x,weights['wc1'],biases['bc1'])
+norm_x = batch_normalization(x)
+conv1 = conv2d(norm_x,weights['wc1'],biases['bc1'])
+conv2 = conv2d(conv1,weights['wc2'],biases['bc2'])
 final = []
-for i in range(0,32):
-    mat_x = conv1[:,:,:,i]
+for i in range(0,64):
+    mat_x = conv2[:,:,:,i]
     final += [tf.matmul(mat_x,mat_x,transpose_b=True),]
     #final += tf.reshape(final[i],(-1,100,100,1))
 y = tf.stack(final,axis=3)
-conv2 = conv2d(y,weights['wc2'],biases['bc2'])
-conv3a = conv2d(conv2,weights['wc3a'],biases['bc3a'])
+y2 = batch_normalization(y)
+conv3a = conv2d(y2,weights['wc3a'],biases['bc3a'])
 conv3b = conv2d(conv3a,weights['wc3b'],biases['bc3b'])
-out = conv2d(conv3b,weights['out2'],biases['out2'])
-out2 = tf.multiply(out,above_zero,name='zero')
+outa = conv2d(conv3b,weights['outa'],biases['outa'])
+outb = conv2d(outa,weights['outb'],biases['outb'])
+outc = conv2d(outb,weights['outc'],biases['outc'])
+out = conv2d(outc,weights['out2'],biases['out2'])
+out2 = tf.multiply(out,above_zero,name='zero') # kill entries of nan so they are not in cost
 #out = tf.reshape(out,shape=(-1,100,100))
 
 # Define loss and optimizer
@@ -142,18 +157,20 @@ optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 ##correct_pred = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
 ##accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
+saver = tf.train.Saver()
 # Initializing the variables
 init = tf.global_variables_initializer()
 sess = tf.Session()
-with tf.Session() as sess:
-    sess.run(init)
-
-    # Training cycle
-    for epoch in range(training_epochs):
-        avg_cost = 0.
-        total_batch = 357#int(mnist.train.num_examples/batch_size)
-        # Loop over all batches
-        for i in range(357):
+sess.run(init)
+# Training cycle
+result = {}
+for epoch in range(training_epochs):
+    avg_cost = 0.
+    val_cost = 0.
+    total_batch = 300#int(mnist.train.num_examples/batch_size)
+    # Loop over all batches
+    for i in range(357):
+        if i < 300:
             if i%100 == 0:
                 print (i)
             batch_x, batch_y = np.array([[data2_x[i],],]),np.array([[data2_y[i],],])
@@ -164,18 +181,43 @@ with tf.Session() as sess:
                                                           resi_map0: batch_y})
             # Compute average loss
             avg_cost += c / total_batch
-        # Display logs per epoch step
-        if epoch % display_step == 0:
-            print ("Epoch:", '%04d' % (epoch+1), "cost=", 
-                "{:.9f}".format(avg_cost))
-        pred = sess.run( out2, feed_dict={x: batch_x,resi_map0: batch_y})
-        print (pred[0,0:3,0:3,0])
-        print (batch_y[0,0:3,0:3,0])
-        print (sess.run( above_zero, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:3,0:3,0])
-        print(sess.run( conv2, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:3,0:3,0])
-        
-    print ("Optimization Finished!")
-
+        else:
+            batch_x, batch_y = np.array([[data2_x[i],],]),np.array([[data2_y[i],],])
+            batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
+            batch_y = np.swapaxes(np.swapaxes(batch_y,1,3),1,2)
+            cost_i  = sess.run( cost, feed_dict={x: batch_x,resi_map0: batch_y})
+            val_cost += cost_i/57
+    # Display logs per epoch step
+    if epoch % display_step == 0:
+        print ("Epoch:", '%04d' % (epoch+1), "cost=", 
+            "{:.9f}".format(avg_cost))
+    if epoch % display_step == 0:
+        print ("Epoch:", '%04d' % (epoch+1), "cost=", 
+            "{:.9f}".format(val_cost))
+    result[epoch] = [avg_cost,val_cost]
+    pred = sess.run( out2, feed_dict={x: batch_x,resi_map0: batch_y})
+##        print (pred[0,0:10,0:10,0])
+##        print (batch_y[0,0:3,0:3,0])
+##        print (sess.run( above_zero, feed_dict={x: batch_x,resi_map0: batch_y})[0,60:80,60:80,0])
+##        print (sess.run( conv2, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:10,0:10,0])
+##        #print(sess.run( resi_map, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:10,0:10,0])
+##        print (sess.run( y, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:10,0:10,0])
+print ("Optimization Finished!")
+save_path = saver.save(sess,'model300.ckpt')
+plt.plot(range(0,300),[result[i][0] for i in result],label='Train')
+plt.plot(range(0,300),[result[i][1] for i in result],label='Val')
+plt.legend();plt.ylabel('RMSE cost') ; plt.xlabel('epoch')
+plt.savefig('Train_curve.png')
+result_cord = {}
+for i in range(0,357):
+	batch_x, batch_y = np.array([[data2_x[i],],]),np.array([[data2_y[i],],])
+	batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
+	batch_y = np.swapaxes(np.swapaxes(batch_y,1,3),1,2)
+	result_cord[(i,data2_name[i])] = data[data2_name[i]] + [sess.run(out, feed_dict={x: batch_x,resi_map0: batch_y}),]
+np.save('result_cord.npy',result_cord)
+fig, ax = plt.subplots(2, sharex=True,figsize=(7, 15))
+ax[1].imshow(sess.run( resi_map, feed_dict={x: batch_x,resi_map0: batch_y})[0,:,:,0])
+ax[0].imshow(sess.run( out2, feed_dict={x: batch_x,resi_map0: batch_y})[0,:,:,0])
 die
 def conv_net(x, weights, biases, dropout):
     # Reshape input picture
