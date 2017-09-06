@@ -26,14 +26,17 @@ from imagenet_utils import _obtain_input_shape
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
-data = np.load('data_0nan.npy.zip')['data_0nan'].item()
+#data = np.load('data_0nan.npy.zip')['data_0nan'].item()
+data1 = np.load('data_484_nan.npy').item()
+data2 = np.load('data_484_ss.npy').item()
+data3 = np.load('data_484_extra.npy').item()
 data2_x = []
 data2_y = []
 data2_name = []
 # Import MINST data
 #from tensorflow.examples.tutorials.mnist import input_data
 #st = input_data.read_data_sets("MNIST_data/", one_hot=True)
-
+die
 def make_array(str):
     temp = [0,]*len(str)
     for i in range(len(str)):
