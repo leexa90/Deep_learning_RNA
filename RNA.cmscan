@@ -1,0 +1,663 @@
+# cmscan :: search sequence(s) against a CM database
+# INFERNAL 1.1.2 (July 2016)
+# Copyright (C) 2016 Howard Hughes Medical Institute.
+# Freely distributed under a BSD open source license.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query sequence file:                   RNA.fa
+# target CM database:                    Rfam.cm
+# database size is set to:               0.1 Mb
+# output directed to file:               RNA.cmscan
+# tabular output of hits:                RNA.tblout
+# tabular output format:                 2
+# max ASCII text line length:            999
+# sequence reporting threshold:          E-value <= 0.01
+# Max sensitivity mode:                  on [all heuristic filters off]
+# use CYK for final search stage         on
+# clan information read from file:       Rfam.clanin
+# truncated hit detection:               off [due to --max]
+# number of worker threads:              20
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       4oji_a  [L=53]
+Hit scores:
+ rank     E-value  score  bias  modelname   start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  ---------- ------ ------   --- ----- ----  -----------
+  (1) !   0.00044   17.8   0.0  Twister-P5     14     34 +  cm    no 0.71  -
+
+
+Hit alignments:
+>> Twister-P5  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   0.00044   17.8   0.0  cm       36       56 .]          14          34 + ..   17.8    no 0.71
+
+                                      NC
+                -----<<<__________>>> CS
+  Twister-P5 36 CaGggCCGGUCcCAAGCCCGG 56
+                CA +GCCGGUCCCAAGCCCGG
+      4oji_a 14 CAAUGCCGGUCCCAAGCCCGG 34
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (106 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          1  (7.373e-05); includes 0 truncated hit(s)
+
+# CPU time: 71.31u 71.29s 00:02:22.60 Elapsed: 00:00:48.35
+//
+Query:       4lvw_a  [L=89]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+  (1) !   5.5e-16   62.5   0.0  THF            1     88 +  cm    no 0.52  -
+
+
+Hit alignments:
+>> THF  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   5.5e-16   62.5   0.0  cm        1      100 []           1          88 + [.   62.5    no 0.52
+
+                                                                                                                  NC
+             (((((----(((((((((((,,,,,<<-<<<<<<<<___________>>>>>>>>>>,,,<<<<______>>>>,,,)))))))))))-------))))) CS
+     THF   1 ggcaGAGUAGggugccgugcGUuAAGUGccggcgggAcGGGgaGUUGcccgccggACGAAgggcaaaauugcccGCGguacggcaccCGCAUcCgCugcc 100
+             GG AGAGUA ::UG::::GCGUUAAGUG:::G:G: A+GGG++GU G :C:C:::ACGAAG:    A +   :CGCGGU::::CA:: GCAUCCGCU CC
+  4lvw_a   1 GG-AGAGUA-GAUGAUUCGCGUUAAGUGUGUGUGA-AUGGGAUGUCG-UCACACAACGAAGC---GAGA---GCGCGGUGAAUCAUU-GCAUCCGCU-CC 88 
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (178 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          1  (0.000184); includes 0 truncated hit(s)
+
+# CPU time: 98.16u 53.63s 00:02:31.79 Elapsed: 00:00:47.10
+//
+Query:       1kh6_a  [L=53]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+  (1) !   7.9e-13   42.0   0.0  IRES_HCV       2     52 +  cm    no 0.65  -
+
+
+Hit alignments:
+>> IRES_HCV  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   7.9e-13   42.0   0.0  cm       86      178 ..           2          52 + ..   42.0    no 0.65
+
+                                                                   NC
+               ((((,,<<<<<<____>>>>>><<<<~~~~~~>>>>,<<<____>>>)))) CS
+  IRES_HCV  86 gCGGAACCGGuGAGUACaCCGGaauc*[48]*gauuUGGGCGUGCCCCCGc 178
+               GCGGAACCGGUGAGUACACCGGAAUC      GAUUUGGGCGUGCCCCCGC
+    1kh6_a   2 GCGGAACCGGUGAGUACACCGGAAUC*[ 6]*GAUUUGGGCGUGCCCCCGC 52 
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (106 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          1  (0.0001791); includes 0 truncated hit(s)
+
+# CPU time: 70.52u 59.69s 00:02:10.20 Elapsed: 00:00:45.41
+//
+Query:       4ue5_a  [L=298]
+Hit scores:
+ rank     E-value  score  bias  modelname           start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  ------------------ ------ ------   --- ----- ----  -----------
+  (1) !     2e-86  270.8   1.6  Metazoa_SRP             1    298 +  cm    no 0.63  -
+  (2) !   1.4e-26   98.1   0.1  Protozoa_SRP           19    267 +  cm    no 0.62  -
+  (3) !     4e-25   83.5   1.6  Plant_SRP               1    298 +  cm    no 0.63  -
+  (4) !   2.8e-07   28.8   0.0  Archaea_SRP            84    263 +  cm    no 0.61  -
+  (5) !   2.8e-05   18.9   0.0  Dictyostelium_SRP      78    269 +  cm    no 0.61  -
+  (6) !   6.9e-05   23.2   0.0  Bacteria_small_SRP    154    243 +  cm    no 0.61  -
+  (7) !   0.00041   18.4   0.0  Bacteria_large_SRP    176    219 +  cm    no 0.64  -
+  (8) !    0.0018   14.0   0.0  sR32                  207    229 +  cm    no 0.52  -
+  (9) !    0.0039   10.9   0.0  Fungi_SRP             103    248 +  cm    no 0.62  -
+ (10) !    0.0059   16.0   0.0  DsrA                   87     25 -  cm    no 0.63  -
+
+
+Hit alignments:
+>> Metazoa_SRP  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !     2e-86  270.8   1.6  cm        1      301 []           1         298 + []  270.8    no 0.63
+
+                  v                                            v      v  v             v             v                                                       vv                vv                                                                                                           v         v              v  v        NC
+                  (((<<<<<<<<____>>>>>>>>,,,,<<<_______.__>>>)))-((((((((((-((((((((((((((((----((((((((-(((((-(((((((---((((((((((-(((((((((((((((<<<<<<<<<<<<<<<<<<____>>>>>>>>>>>>>>>>>><<___>><<<<<<<---<<<<<----<<<____>>>---->>>>>->>>>>>>))))))))))-)))))))---))))))))))))))))))))-)))))))))))))))))--))))))))))))))))):: CS
+  Metazoa_SRP   1 gCcGGGcgcgguGgCgcgcgCCUGUAAuccaagcUaC.UgggagGcuggggggggggggucgcgugcggccggGAguucugggccggcagcgucccaugccGAccgggcGuCcgcgcuaggcucggcGUcgacauggggcccccggcGGAGgccgggggccccaggucgccuAAggaGgggcGaAccggcccAGGgcgGAAAcgcAGCAggcagAAgcccCcGCgccgagccGuagcggGAUagCgcccgggaaugggcgcugCcggcccagCccggccgauAacgcgacacccccccccUU 301
+                   CCGGGCGCGGUGGCGCGCGCCUGUA UCC+AGCUAC  GGGAGGCUG:G:: GG GG:UCGC::G:G: C:GGAGUUCUGG: :G CAG:G+:C:AUGCCGA:C:GG:GUCCGC:CUA:G:UC:GC:UC:A:AUGG:G  C:C:::GGAG:::G:G  C:CCAG:U:GCCUAAGGAGG:G:GAAC:::CCCAGG:CGGAAACG:AGCAGG:::AA:C:CCCG:GC:GA:C:GUAG:GGGAU GC:CC:G:GAAU:G:C:CUG C: :CCAGCC:G :C:A+A::GCGA:A CC ::C:C U
+       4ue5_a   1 -CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGCUACuCGGGAGGCUGAGGCAGGAGGAUCGCUUGAGCCCAGGAGUUCUGGGCUG-CAGUGCGCUAUGCCGAUCGGGUGUCCGCACUAAGUUCGGCAUCAAUAUGGUGACCUCCCGGGAGCGGGGGACCACCAGGUUGCCUAAGGAGGGGUGAACCGGCCCAGGUCGGAAACGGAGCAGGUCAAAACUCCCGUGCUGAUCAGUAGUGGGAUCGCGCCUGUGAAUAGCCACUG-CACUCCAGCCUGUGCAACAUAGCGAGACCCCGUCUC-U 298
+
+>> Protozoa_SRP  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (2) !   1.4e-26   98.1   0.1  cm        1      241 []          19         267 + ..   98.1    no 0.62
+
+                                                                             v                   v           v                 v           v     vv                vv     v                                                                v                    v  v          v      NC
+                   :::::::::::<<<<..........>>>>---------------------..-((((((---..---(((((-((((((((------.--((((((((((-(((((((((((((((<<<<<<<<<<<<<<<<<<____>>>>>>>>>>>>>>>>>>,,<___><<<<<<<---<<<<<----<<<____>>>---->>>>>.>>>>>>>))))))))))-)))))))---))))))))))))))))))))))))))) CS
+  Protozoa_SRP   1 ucucgCUGUaACcug..........cagGGGucuuguguGUguaAugggg..acccccuaGa..Ccagcuccagcucggcgugaguu.GAcccuccGcCcAuugcaggaccucaGUccccgggggugCuccgcuGuAgagcggaGcacccccggggaauaaaggggcgcgaACcgCcccAGGCUGGaAACAGAGCAggGaa.agcgcccGCugagguccGugcaagGAUcaCggagggcgccgagcggagcaggggg 241
+                    C+ G  GU+ C:::          :::G+G C  G+G+ U ++ UG G   A:::::   +  C+ ::::: GCU:: C        GA C::: G:CC ::::A:G :C::: UC::  :GG::  ::C:C:G+AG:G:G::  ::CC:  ::G  UAA G:GG:G:GAACC: CCCAGG :GGAAAC: AGCAGG :A A:C:CC:G :::G: C:GU::::GGAUC:C :::G  G ::AGC::::: :::::
+        4ue5_a  19 GCCUGUAGUCCCAGCuacucgggagGCUGAGGCAGGAGGAUCGCUUGAGCccAGGAGUUCUGggCUGCAGUGCGCUAUGC-------cGAUCGGGUGUCCGCACUAAGUUCGGCAUCAAUAUGGUGACCUCCCGGGAGCGGGGGACCACCAGGUUGCCUAAGGAGGGGUGAACCGGCCCAGGUCGGAAACGGAGCAGGUCAaAACUCCCGUGCUGAUCAGUAGUGGGAUCGCGCCUGU-GAAUAGCCACUGCACUCC 267
+
+>> Plant_SRP  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (3) !     4e-25   83.5   1.6  cm        1      305 []           1         298 + []   83.5    no 0.63
+
+                v                                            v        v  v          vvv   v v vv     v             v    vv                 v            v     vv                vv     v           v         v                            v       v       v                    vvv            v          vv v v  vvv            v  v       NC
+                (((<<<<<<<<____>>>>>>>>,,,,<<<<__......>>>>)))--(((((((((((-((((((((((((-((((((((((((((((((-(-(((-((----(((((((((((-(((((((((((((((,<<<<<<<<<<<<<<<<<<____>>>>>>>>>>>>>>>>>><<.__>><<<<<<<---<<<<<----<<<______>>>---->>>>>->>>>>>>))))))))))-)))))))---))))))))))).)))).))))))))-----))))))))))))))))-)))-)))-))))))))))) CS
+  Plant_SRP   1 GcCgagcucacUAACgugagcuuGUaACCCaAG......uGGGGgCAucaagguGgugggccguugggcggcuccucccggccGGgcccgcugucugccauuUuccgGcccGcCCauUCCAcGccgggAGcUgggccgcggggcccgggCGAAGGcccgggccccgcggccccu.AaagcGGcgggcAccgCGuGAGGCuGGuUUCACaGAGCAgCGaguaccgCCggCUcccggCgGUGGAaGGAUaaCgggCcggug.cagc.gcgggcCCAcuauggccgggagggccgccccaaucggAccacCaccuug 305
+                 CCG:GC:C::U  C::G:GC:UGUA :CC:AG      :GG:GGC  ::AG::+G: GG:::::::G   C+:   :  :::G: ::C::UG ::: :    +  :::::G:CC+: C:A:G :::G::: :::: ::G:G  C:::::G AG:::::G  C:C:: ::::C: AA:G GG:G:G+AC :  : AGG :GG    AC: AGCA:  : +A:C:CC :::C::: C:GU:G :GGAU :C:::::   : :::C ::G:: :C     :::  :   :G   C:+::: :::AC :C ::CU::
+     4ue5_a   1 -CCGGGCGCGGUGGCGCGCGCCUGUAGUCCCAGcuacucGGGAGGC--UGAGGCAGGAGGAUCGCUUGAGCCCAGGAGUUCUGGGCUGCAGUGCGCUAUG-CCGAUCGGGUGUCCGCACUAAGUUCGGCAU-CAAUAUGGUGACCUCCCGGGAGCGGGGGACCACCAGGUUGCCuAAGGAGGGGUGAACCGGCCCAGGUCGGAA--ACGGAGCAGGUCAAAACUCCCGUGCUGAUCAGUAGUGGGAUCGCGCCUGUGAAuAGCCaCUGCACUC-----CAG--CCUGUGCAACAUAGC-GAGACCCC-GUCUCU 298
+
+>> Archaea_SRP  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (4) !   2.8e-07   28.8   0.0  cm      101      272 ..          84         263 + ..   28.8    no 0.61
+
+                                    v               v v           v     vv                vv      v           v   v                                   v   v        v v                  v               NC
+                  (((((((.(((((((---(((((((((..(((((((((((((((<<<<<<<<<<<<<<<<<<____>>>>>>>>>>>->>>>>>>,.....,<<<<<<<---<<<<<----<<<____>>>---->>>>>>>>>>>>,))))))))))-))))).)---)))))))))))))))))))))) CS
+  Archaea_SRP 101 ccgcguc.ccuccccuGAccccccGuC..CcgcgGGGccgGgcGgcggcgggcccccccuCcGgAGgGagggggggcAccgccguu.....accggggcAACccgGcCAGGCCCGGAAGGGAGCAgCcgggccccggACgcCcggCGCUcgcgG.GguagCggggggggggagggacgcgg 272
+                  ::::GU: :CU:::C GA C : :GUC  C::::   :C:G:: :::  :GG::  C:C:C GGAG G:G:G  ::C C:  :::      + ::G ::AAC:: :CCAGG:C G AA G:AGCAG: :::: C::   ::C:G:    ::::G G U+GC: : G G:::AG::AC::::
+       4ue5_a  84 UGCAGUGcGCUAUGCCGAUCGGGUGUCcgCACUAAGUUCGGCAUCAAUAUGGUGACCUCCCGGGAGCGGGGGACCAC-CAGGUUGCcuaagGAGGGGUGAACCGGCCCAGGUCGGAAACGGAGCAGGUCAAAACUCCCGUGCUGAUCAGUAGUGgGAUCGCGCCUGUGAAUAGCCACUGCA 263
+
+>> Dictyostelium_SRP  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (5) !   2.8e-05   18.9   0.0  cm       71      264 ..          78         269 + ..   18.9    no 0.61
+
+                                                  v                   v      v           v                v           v    v        vv                            vv       v      v                      v                     NC
+                        (((---(((((((-----(((((---((-(((((((((---(((-(((((((<<<<<<-<<<<.-<<<<<<<____>>>>>>>-.>>>>->>>>>.>,,<<-<<--<.<<---<<<----<<<____>>>---->>>->>->-->>>>,)))))))--)))---)))---))))))))--))))))))))))---))) CS
+  Dictyostelium_SRP  71 ucaggacccuuGGgaaAAaCgccGCAuaaaGucGauCCACacuuACgucGggguCgaCAucCc.uugaguCcaUAagGauucaa.gGgaaGucGa.uAAuGACcgAg.ucaAGGucCAGGCugGCAAcaGAGCAgaCAgaGcgAgGCaCcuCgacGGGaagcGaGGaAAGuCgaCuuaAAggcGuCCaagggaAAuga 264
+                        :::GG ::C:: G     :C:::GC  A : :: :UCC CACU:A: UC ::: C:A AU::: + : ::C:  A :G:: :   :::A+ U:G  :AA GA::G :     G :CCAGG :GG AAC: AGCAG:     :  ::C  :: GA : G:AG G GGA  G: :: :U  A:::G:C ::G::   :::
+             4ue5_a  78 CUGGGCUGCAGUGC----GCUAUGCCGAUCGGGUGUCCGCACUAAGUUCGGCAUCAAUAUGGUgACCUCCCGGGAGCGGGGGACcACCAGGUUGCcUAAGGAGGGGUgAACCGGCCCAGGUCGGAAACGGAGCAGGUCAAAACUCCCGUGCUGAUCAGUAGUG-GGAUCGCGCCUGU-GAAUAGCCACUGCACUCCAG 269
+
+>> Bacteria_small_SRP  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (6) !   6.9e-05   23.2   0.0  cm        1       97 []         154         243 + ..   23.2    no 0.61
+
+                                vv       vvvvvvv         v                          v       v  vvvvvv         v  v           NC
+                         :::<<<<<<<<<<<<-<<<<<<<<<<<<<---<<<<<----<<<____>>>---->>>>>.>>>>>>>-->>>>>>>--.>>>>>>-->>>>>:::::: CS
+  Bacteria_small_SRP   1 uauggggccccgcGcAacgccaccccgccAAcccgGUCAGGgCcGGAAgGcAGCAGCcgg.ggcgggguuuggcgugUG.Cgcggguugccccuuuuuu 97 
+                          + ::::  : :::C  +++   :: G::AAC : ::CAGG C:G AA:G AGCA:: :  ::C ::         GUG ::: :  U ::::+ U   
+              4ue5_a 154 GGACCACCAGGUUGC-CUAAGGAGGGGUGAACCGGCCCAGGUCGGAAACGGAGCAGGUCAaAACUCCC--------GUGcUGAUCAGUAGUGGGAUCGC 243
+
+>> Bacteria_large_SRP  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (7) !   0.00041   18.4   0.0  cm      134      177 ..         176         219 + ..   18.4    no 0.64
+
+                                  v                          v        NC
+                         <<<<<<---<<<<<----<<<____>>>---->>>>>->>>>>> CS
+  Bacteria_large_SRP 134 cccgugAACcccGuCAGGuCCGGAAGGaAGCAgCgguAagcggg 177
+                         :: G:GAAC :  :CAGG C G AA G AGCA:  : AA:C ::
+              4ue5_a 176 GGGGUGAACCGGCCCAGGUCGGAAACGGAGCAGGUCAAAACUCC 219
+
+>> sR32  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (8) !    0.0018   14.0   0.0  cm       35       57 .]         207         229 + ..   14.0    no 0.52
+
+                                     NC
+             ::::::::::::::::::::::: CS
+    sR32  35 AGGGuuAAACUCCGGUGCUGAUc 57 
+             AGG + AAACUCC GUGCUGAUC
+  4ue5_a 207 AGGUCAAAACUCCCGUGCUGAUC 229
+
+>> Fungi_SRP  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (9) !    0.0039   10.9   0.0  cm       98      257 ..         103         248 + ..   10.9    no 0.62
+
+                         v       v              v v     v v                 v v      v v              v     v                                v     v         v        v            NC
+                (((((((.(((((((((((((((((((,,,<<<<<<<<<<<<<<<<<-<<____>>>>>>>>>>->>>>>>>>->,<<<___>>>,<<<<<<<---<<<<<----<<<____>>>---->>>>>.>>>>>>>)))))))))))-))))))))---))))))) CS
+  Fungi_SRP  98 cagGUGu.CCcGgccGAuccuuGcGGGUcuccccccgcccggucgcgcGAGuAAUCcgcgacuguggcgggggCggcgcUAAgugaucgccuugACgcCUugAGGGgAGcuAUcCAGCAgAGgc.aaggcgaCCCgUgaggaGGCggcCgGGAUugCACcug 257
+                C GG GU C C:::::  :C  G:::    C: : :G::  G C:::C :G A : :::G C+  ::C: : : G  :CUAAG:   :G :U  AC:: :: AGG  :G +A:  AGCA:: ::  A: C:  :::U  G:   :::::G GAU GC CC G
+     4ue5_a 103 CGGGUGUcCGCACUAAGUUC--GGCAU---CAAUAUGGU--GACCUCCCGGGAGCGGGGGACC--ACCA-GGUUG--CCUAAGG--AGGGGUGAACCGGCCCAGGUCGGAAACGGAGCAGGUCAaAACUCCCGUGCU--GAUCAGUAGUGGGAUCGCGCCUG 248
+
+>> DsrA  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+ (10) !    0.0059   16.0   0.0  cm        1       85 []          87          25 - ..   16.0    no 0.63
+
+                                              v       v      v       v   NC
+            :::<<<<<<<_____>>>>>>>,,,<~~~~~~>-<<<<<<<-<<____>>->>>>>>>:: CS
+    DsrA  1 aaCaCauCaGAUUUCCuGguGuAACg*[31]*caauCCcGacccCuucggGuCgGGauUU 85
+              CA:::CAGA  UCCUG:::U A :      :  : C:G:C CC+ +G  :C:G :  U
+  4ue5_a 87 UGCAGCCCAGAACUCCUGGGCUCAAG*[ 9]*UGCCUCAGCCUCCCGAGUAGCUGGGACU 25
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (596 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                         10  (0.0009885); includes 0 truncated hit(s)
+
+# CPU time: 481.28u 30.81s 00:08:32.08 Elapsed: 00:01:23.17
+//
+Query:       5m0h_a  [L=41]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Hit alignments:
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (82 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          0  (0); includes 0 truncated hit(s)
+
+# CPU time: 63.99u 64.72s 00:02:08.71 Elapsed: 00:00:45.78
+//
+Query:       4v5z_b1  [L=121]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+  (1) !   1.7e-24   74.5   0.0  5_8S_rRNA      1    121 +  cm    no 0.52  -
+
+
+Hit alignments:
+>> 5_8S_rRNA  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   1.7e-24   74.5   0.0  cm        1      154 []           1         121 + []   74.5    no 0.52
+
+                                                                                                                                                               NC
+                :::::::::::::::::::::::::::::::::::::::((((<<<<______..>>>>,,,,,,,<<<----<<____>>---------->>>,,,,,,)))),,,<<<___>>><~~~~~~>:::::::::::::::::: CS
+  5_8S_rRNA   1 AACuuUuAgCGAUGGAUguCUuGGCUCccGuaUCGAUGAAgaaCGCaGCaAAa..uGCGAUAcGUaguGUGAAuuGCAGaaUuccgUgAAUCacCGAAucuucGAACGCaaaUuGCG*[20]*CAUgccUGuuugAGUGUCa 154
+                A   UU AGCG+UGGAU  CU GGCUC +G+ UCGAUGAAGAACGCAGC+  A  UGCGA A+ UA:UGUGAAU:GCAG:A   C U  AUCA:CGA +CUUCGAACGCA   UGC:      :A+GCCU            
+    4v5z_b1   1 ACUCUU-AGCGGUGGAUCACUCGGCUCGUGCGUCGAUGAAGAACGCAGCGCUAgcUGCGAGAAUUAAUGUGAAUUGCAGGAC-ACAUUGAUCAUCGACACUUCGAACGCACU-UGCG*[ 0]*UACGCCU------------ 121
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (242 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          1  (0.0001861); includes 0 truncated hit(s)
+
+# CPU time: 131.13u 46.41s 00:02:57.54 Elapsed: 00:00:49.22
+//
+Query:       5x2h_b  [L=93]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Hit alignments:
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (186 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          0  (0); includes 0 truncated hit(s)
+
+# CPU time: 100.45u 52.42s 00:02:32.87 Elapsed: 00:00:47.13
+//
+Query:       5ktj_a  [L=49]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+  (1) !   8.9e-05   23.8   0.0  Pistol         1     49 +  cm    no 0.49  -
+
+
+Hit alignments:
+>> Pistol  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   8.9e-05   23.8   0.0  cm        1       70 []           1          49 + []   23.8    no 0.49
+
+            v              v           v                      v    NC
+            <<<<________>>>>-------.<<<<--------------~~~~~~-->>>> CS
+  Pistol  1 acUCGUCuggGCGAguAUAAAuA.cgCaUUAgGCccaGAGCG*[23]*GUuGcg 70
+             CUCGU+UG+GCGAGUAUAAA+A  :: UUAGGC+CA+AGCG      G  :: 
+  5ktj_a  1 -CUCGUUUGAGCGAGUAUAAACAgUUGGUUAGGCUCAAAGCG*[ 2]*GAGCAG 49
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (98 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          1  (0.0001861); includes 0 truncated hit(s)
+
+# CPU time: 67.51u 64.18s 00:02:11.69 Elapsed: 00:00:45.30
+//
+Query:       1wz2_c  [L=88]
+Hit scores:
+ rank     E-value  score  bias  modelname       start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  -------------- ------ ------   --- ----- ----  -----------
+  (1) !   7.2e-16   54.8   0.0  tRNA                1     85 +  cm    no 0.71  -
+  (2) !   1.3e-05   17.5   0.0  tmRNA              27     88 +  cm    no 0.71  -
+  (3) !   2.7e-05   23.1   0.0  mascRNA-menRNA     27     84 +  cm    no 0.72  -
+  (4) !   0.00012   20.0   0.1  tRNA-Sec            1     84 +  cm    no 0.71  -
+
+
+Hit alignments:
+>> tRNA  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   7.2e-16   54.8   0.0  cm        1       71 []           1          85 + [.   54.8    no 0.71
+
+                                                                                                    NC
+            (((((((,,<<<<___..___.._>>>>,<<<<<_______>>>>>,,............,,<<<<<_______>>>>>))))))): CS
+    tRNA  1 GgagauaUAGCucAgU..GGU..AgaGCgucgGaCUuaaAAuCcgaag............gcgcgGGUUCgAaUCCcgcuaucucCa 71
+            G::G:::U GC::AG   GGU  A::GCG::GGACU AA AUCC::+              C::GGGUUCGAAUCCC:::::C::CA
+  1wz2_c  1 GCGGGGGUUGCCGAGCcuGGUcaAAGGCGGGGGACUCAAGAUCCCCU-cccguagggguu-CCGGGGUUCGAAUCCCCGCCCCCGCA 85
+
+>> tmRNA  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (2) !   1.3e-05   17.5   0.0  cm        1      354 []          27          88 + .]   17.5    no 0.71
+
+                                                                   NC
+             [[[[[[[,.,,,,,,,,~~~~~~~,<<<<<_______>>>>>]]]]]]]:::: CS
+   tmRNA   1 GGGGcUGA.auGGuUUC*[309]*CGgGGGUUCGAuUCCCcCCAgCUCCACCa 354
+             G  G: GA       UC       C:GGGGUUCGA UCCCC:C :C  CACCA
+  1wz2_c  27 GCGGGGGAc------UC*[ 22]*CCGGGGUUCGAAUCCCCGCCCCCGCACCA 88 
+
+>> mascRNA-menRNA  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (3) !   2.7e-05   23.1   0.0  cm        1       56 []          27          84 + ..   23.1    no 0.72
+
+                                                          NC
+                    (((((((~~~~~~<<<<<_______>>>>>))))))) CS
+  mascRNA-menRNA  1 GacgCuG*[25]*CgGGGUUCaAgUCCCcGCgGcguC 56
+                    G::G :G      CGGGGUUC+A+UCCCCGC: C::C
+          1wz2_c 27 GCGGGGG*[27]*CGGGGUUCGAAUCCCCGCCCCCGC 84
+
+>> tRNA-Sec  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (4) !   0.00012   20.0   0.1  cm        1       91 []           1          84 + [.   20.0    no 0.71
+
+                            vvv       vvv                       vvv            vvv                           NC
+              (((((((((,,<<<<<<..____.>>>>>><<<<<<_______>>>>>>,<<<<<________>>>>>,,<<<<_______>>>>))))))))) CS
+  tRNA-Sec  1 Gggggggcgaucggccc..UGGU.gggccguccGGgCUUCAAAcCCggaGggggcuagcaacggccccgGggGGUUCGAUUCCcccgccccccC 91
+              G:GGGGG   U:::     UGGU    ::::::GG:CU  A A:CC:::    :C        G:  +  GGGGUUCGA UCCCC  CCCCC:C
+    1wz2_c  1 GCGGGGGU--UGCCGAGccUGGUcAAAGGCGGGGGACUCAAGAUCCCCUC---CCGUAG----GGGUUCCGGGGUUCGAAUCCCC-GCCCCCGC 84
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (176 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          4  (0.0006111); includes 0 truncated hit(s)
+
+# CPU time: 96.37u 48.71s 00:02:25.08 Elapsed: 00:00:46.85
+//
+Query:       5wtk_b  [L=49]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Hit alignments:
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (98 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          0  (0); includes 0 truncated hit(s)
+
+# CPU time: 66.77u 63.20s 00:02:09.97 Elapsed: 00:00:45.69
+//
+Query:       3j79_b  [L=118]
+Hit scores:
+ rank     E-value  score  bias  modelname              start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------------------- ------ ------   --- ----- ----  -----------
+  (1) !   3.2e-29  103.9   0.0  5S_rRNA                    1    118 +  cm    no 0.51  -
+  (2) !    0.0089   13.8   0.0  CpoB_ybgF_thermometer     37     82 +  cm    no 0.46  -
+
+
+Hit alignments:
+>> 5S_rRNA  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   3.2e-29  103.9   0.0  cm        1      119 []           1         118 + []  103.9    no 0.51
+
+              v                                                                                                                    v  NC
+              (((((((((,,,,<<-<<<<<---<<--<<<<<<______>>-->>>>-->>---->>>>>-->><<<-<<----<-<<-----<<____>>----->>->-->>->>>))))))))): CS
+  5S_rRNA   1 gccuGcggcCAUAccagcgcgaAagcACcgGauCCCAUCcGaACuCcgAAguUAAGcgcgcUugggCcagggUAGUAcuagGaUGgGuGAcCuCcUGggAAgaccagGugccgCaggcc 119
+               ::::C:::CAUAC:A::G:G+A :CACC:GAUCCCAUC+GAACUC:GAAG:UAAGC:C::U+:GGC  GG UAGUACU+ G+UGGG GACC C  GGGAA ACCA GU:::G::::+ 
+   3j79_b   1 -GACUCGUUCAUACUACAGUGGAUACACCAGAUCCCAUCAGAACUCUGAAGUUAAGCACUGUAAGGCUUGGCUAGUACUGAGGUGGGAGACCGCUCGGGAACACCAGGUGAUGAGUCAG 118
+
+>> CpoB_ybgF_thermometer  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (2) !    0.0089   13.8   0.0  cm        1      139 []          37          82 + ..   13.8    no 0.46
+
+                                                                                    NC
+                            <<<<--<<-----<<<<<<<________>>>>>>>---->>-->>>>-~~~~~~: CS
+  CpoB_ybgF_thermometer   1 cCagAUCuCuAUCGuuucuuACGGUAAAgagaaaCCAGCaGUAcuGgG*[90]*G 139
+                            :CAGA CUCU   G: ::::AC GUAA :::: :C    AGUACUG:G      G
+                 3j79_b  37 UCAGAACUCUGAAGUUAAGCACUGUAAGGCUUGGC---UAGUACUGAG*[ 0]*G 82 
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (236 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          2  (0.0002586); includes 0 truncated hit(s)
+
+# CPU time: 127.68u 46.86s 00:02:54.54 Elapsed: 00:00:48.71
+//
+Query:       3kfu_k  [L=76]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+  (1) !   3.7e-21   71.0   0.0  tRNA           1     73 +  cm    no 0.66  -
+  (2) !   0.00028   18.9   0.0  tRNA-Sec       1     72 +  cm    no 0.65  -
+
+
+Hit alignments:
+>> tRNA  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   3.7e-21   71.0   0.0  cm        1       71 []           1          73 + [.   71.0    no 0.66
+
+                                                                                      NC
+            (((((((,,<<<<___.____>>>>,<<<<<_______>>>>>,,,.,<<<<<_______>>>>>))))))): CS
+    tRNA  1 GgagauaUAGCucAgU.GGUAgaGCgucgGaCUuaaAAuCcgaagg.cgcgGGUUCgAaUCCcgcuaucucCa 71
+            :::G:::UAGCUCAG  GGUAGAGC+:C:G:CU+++AA:C:G:AGG CGC:GGUUCGA UCC:GC:::C:::+
+  3kfu_k  1 UCCGCGGUAGCUCAGCaGGUAGAGCAGCCGGCUGUUAACCGGUAGGuCGCAGGUUCGAGUCCUGCCCGCGGAG 73
+
+>> tRNA-Sec  
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (2) !   0.00028   18.9   0.0  cm        1       91 []           1          72 + [.   18.9    no 0.65
+
+                     v       v      v    v                 v                         v        NC
+              (((((((((,,<<<<<<____>>>>>><<<<<<_______>>>>>>,~~~~~~,,<<<<_______>>>>))))))))) CS
+  tRNA-Sec  1 GggggggcgaucggcccUGGUgggccguccGGgCUUCAAAcCCggaG*[18]*gGggGGUUCGAUUCCcccgccccccC 91
+               ::G:GG    :::C    G   G::: :C:GGCU   AACC:G: G       G::GGUUCGA UCC::  CC:C:: 
+    3kfu_k  1 UCCGCGGU--AGCUCAGCAGGUAGAGCAGCCGGCUGUUAACCGGUAG*[ 2]*CGCAGGUUCGAGUCCUG-CCCGCGGA 72
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (152 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          2  (0.000355); includes 0 truncated hit(s)
+
+# CPU time: 86.06u 56.62s 00:02:22.68 Elapsed: 00:00:46.42
+//
+Query:       5dun_a  [L=53]
+Hit scores:
+ rank     E-value  score  bias  modelname  start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  --------- ------ ------   --- ----- ----  -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Hit alignments:
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (106 residues searched)
+Query sequences re-searched for truncated hits:                  0  (0.0 residues re-searched, avg per model)
+Target model(s):                                              2687  (346722 consensus positions)
+Windows   passing  local HMM SSV           filter:                  (off)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:                  (off)
+Windows   passing  local HMM Forward  bias filter:                  (off)
+Windows   passing glocal HMM Forward       filter:                  (off)
+Windows   passing glocal HMM Forward  bias filter:                  (off)
+Envelopes passing glocal HMM envelope defn filter:                  (off)
+Envelopes passing  local CM  CYK           filter:                  (off)
+Total CM hits reported:                                          0  (0); includes 0 truncated hit(s)
+
+# CPU time: 69.28u 62.48s 00:02:11.76 Elapsed: 00:00:45.75
+//
