@@ -26,6 +26,9 @@ from imagenet_utils import _obtain_input_shape
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
+
+
+
 data = np.load('data_all.npy.zip')['data_all'].item()
 data1 = np.load('data_484_nan.npy').item()
 data2 = np.load('data_484_ss.npy').item()
@@ -200,6 +203,8 @@ saver = tf.train.Saver()
 init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)
+saver.restore(sess,'model300.ckpt')
+die
 # Training cycle
 result = {}
 for epoch in range(training_epochs):
