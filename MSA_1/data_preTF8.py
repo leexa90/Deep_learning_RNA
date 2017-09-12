@@ -72,6 +72,7 @@ def make_array2(str):
             temp[i] = int(str[i])*10
     return temp
 data1_keys = data1.keys()
+random.seed(0)
 random.shuffle(data1_keys)
 for i in data1_keys:
     if len(data1[i][0]) >= 35:
@@ -131,7 +132,7 @@ def conv2d(x, W, b, strides=1,relu=True,padding='SAME'):
 
 # Parameters
 learning_rate = 0.001
-training_epochs = 300
+training_epochs = 50
 batch_size = 100
 display_step = 1
 n_classes =5
@@ -158,14 +159,14 @@ weights = {
     # 5x5 conv, 1 input, 32 outputs
     '1_wc1': tf.Variable(tf.random_normal([15, 1, 1, 32])),
     # 5x5 conv, 32 inputs, 64 outputs
-    '2_wc2': tf.Variable(tf.random_normal([1, 9, 32, 63])),
+    '2_wc2': tf.Variable(tf.random_normal([1, 15, 32, 63])),
     # 5x5 conv, 64 inputs, 64 outputs
     '3_wc3a': tf.Variable(tf.random_normal([1, 10, 64, 32])),
     '4_wc3b': tf.Variable(tf.random_normal([10, 1, 64, 32])),    
     # 1024 inputs, 10 outputs (class prediction)
-    '5_outaa': tf.Variable(tf.random_normal([15,1,64, 16])),
-    '6_outab': tf.Variable(tf.random_normal([1,15,64, 16])),
-    '7_outb': tf.Variable(tf.random_normal([4,4,32, 16])),
+    '5_outaa': tf.Variable(tf.random_normal([10,1,64, 16])),
+    '6_outab': tf.Variable(tf.random_normal([1,10,64, 16])),
+    '7_outb': tf.Variable(tf.random_normal([5,5,32, 16])),
     '8_outc': tf.Variable(tf.random_normal([5,5,16, 8])),
     '9_out2': tf.Variable(tf.random_normal([5,5,8, 3]))   
 }
@@ -208,14 +209,17 @@ y2 = batch_normalization(y)
 conv3aa = conv2d(y2,weights['3_wc3a'],biases['3_bc3a'])
 conv3ab = conv2d(y2,weights['4_wc3b'],biases['4_bc3b'])
 conv3b = tf.concat([conv3aa,conv3ab],axis=3)
-outaa = conv2d(conv3b,weights['5_outaa'],biases['5_outaa'])
-outab = conv2d(conv3b,weights['6_outab'],biases['6_outab'])
+conv3bp = tf.layers.average_pooling2d(conv3b,(2,2,),1,padding='same')
+outaa = conv2d(conv3bp,weights['5_outaa'],biases['5_outaa'])
+outab = conv2d(conv3bp,weights['6_outab'],biases['6_outab'])
 outa = tf.concat([outaa,outab],axis=3)
+outa_p = tf.layers.average_pooling2d(outa,(2,2,),1,padding='same')
 outb = conv2d(outa,weights['7_outb'],biases['7_outb'])
-outc = conv2d(outb,weights['8_outc'],biases['8_outc'])
+outb_p = tf.layers.average_pooling2d(outb,(2,2,),1,padding='same')
+outc = conv2d(outb_p,weights['8_outc'],biases['8_outc'])
 out = conv2d(outc,weights['9_out2'],biases['9_out2'],relu=False)
 out_softmax = tf.nn.softmax(out,-1,name='softmax')
-out_norm = batch_normalization(out)
+#\out_norm = batch_normalization(out)
 # kill entries of nan so they are not in cost, not needed ???
 #out_softmax2 = tf.multiply(out_softmax,above_zero,name='zero') 
 
@@ -249,7 +253,7 @@ for epoch in range(training_epochs):
     for i in range(len(data2_x)):
         if i < train_n:
             if i%100 == 99:
-                print (i,400*avg_cost/(i+1))
+                print (i,train_n*avg_cost/(i+1))
             batch_x, batch_y = np.array([[data2_x[i],],]),np.array([data2_y[i],])
             batch_y_nan,batch_y_ss = np.array([data2_y_nan[i]]),np.array([data2_y_ss[i]])
             batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
@@ -286,12 +290,12 @@ for epoch in range(training_epochs):
 ##        print (sess.run( y, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:10,0:10,0])
 print ("Optimization Finished!")
 save_path = saver.save(sess,'model300.ckpt')
-plt.plot(range(0,300),[result[i][0] for i in result],label='Train')
-plt.plot(range(0,300),[result[i][1] for i in result],label='Val')
+plt.plot(range(0,training_epochs),[result[i][0] for i in result],label='Train')
+plt.plot(range(0,training_epochs),[result[i][1] for i in result],label='Val')
 plt.legend();plt.ylabel('Logloss cost') ; plt.xlabel('epoch')
 plt.savefig('Train_curveLg.png')
 result_cord = {}
-for i in range(484):
+for i in range(482):
         batch_x, batch_y = np.array([[data2_x[i],],]),np.array([data2_y[i],])
         batch_y_nan,batch_y_ss = np.array([data2_y_nan[i]]),np.array([data2_y_ss[i]])
         batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
