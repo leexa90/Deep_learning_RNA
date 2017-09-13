@@ -1,0 +1,25 @@
+../src/cmscan -Z 0.1 --cut_ga --rfam  --nohmmonly --tblout RNA.tblout --fmt 2 --clanin Rfam.clanin Rfam.cm RNA.fa > RNA.cmscan 
+../src/cmscan -Z 0.1 --cut_ga   --max --tblout RNA.tblout --fmt 2 --clanin Rfam.clanin Rfam.cm RNA.fa > RNA.cmscan 
+../src/cmscan -Z 0.1 --cut_ga --rfam  --nohmmonly --tblout all.tblout --fmt 2  all.cm RNA.fa > RNA_all.cmscan 
+
+
+../src/cmscan -Z 0.1 --cut_ga   --max --tblout RNA.tblout --fmt 2  001051.cm RNA.fa > RNA.cmscan 
+
+
+for i in `seq -f "%05g"  1501 2783`;do 
+
+
+
+wget http://rfam.xfam.org/family/RF${i}/cm -O ${i}.cm ;done
+
+
+for i in `ls -d  cm/000*.cm  `;do cat $i ; done >> all.cm
+
+for i in `ls -d  cm/000*.cm  `;do echo $i ; done >> all.clanin
+
+cmpress -F all.cm 
+
+
+ ../src/cmscan -Z 0.1   --notextw --toponly -E 10 --nohmmonly  --fmt 2 --clanin Rfam.clanin --tblout RNA.tblout  Rfam.cm RNA.fa > RNA.cmscan
+
+ ../src/cmscan -Z 0.1   --textw 999 --toponly -E 10 --nohmmonly  --fmt 2 --clanin Rfam.clanin --tblout RNA.tblout  -o RNA.cmscan Rfam.cm RNA.fa 
