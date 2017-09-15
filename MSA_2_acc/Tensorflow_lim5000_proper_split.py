@@ -35,7 +35,8 @@ data2 = np.load('../data_lim5000_ss.npy.zip')['data_lim5000_ss'].item()
 data3 = np.load('../data_lim5000_extra.npy').item()
 data4 = np.load('../data_lim5000_MSA.npy').item()
 
-data = {}
+data_train = {}
+data_val = {}
 '''
 v5 - make 3 classes, <8 , >=8 & <=15 , >=15
 
@@ -97,7 +98,7 @@ for i in data1_keys_train:
                     window, jump = window_tup[0], window_tup[1]
                     for repeat in range(0,len(data1[i][0]) - window+1,jump):
                         if np.mean(d[repeat:repeat+window,repeat:repeat+window,:]) > 0.9: 
-                            data[i+'_'+str(window)+'_'+str(repeat)] = [tempF[:,repeat:repeat+window],
+                            data_train[i+'_'+str(window)+'_'+str(repeat)] = [tempF[:,repeat:repeat+window],
                                                    temp1[0][repeat:repeat+window],
                                                    temp1[1][repeat:repeat+window],
                                                    temp_resi_map[repeat:repeat+window,repeat:repeat+window,:],
@@ -106,7 +107,7 @@ for i in data1_keys_train:
                                                    temp2[0][repeat:repeat+window,repeat:repeat+window]]
             except ValueError:
                 print ('%s had ValueError, probably some of inputs are of wrong dimention. Data thrown away ' %i)
-train_n = len(data)
+train_n = len(data_train)
 for i in data1_keys_val:
     if len(data1[i][0]) >= 35:
         if i in data2.keys():
@@ -122,44 +123,53 @@ for i in data1_keys_val:
                 temp4 = data4[i]
                 tempF = np.concatenate((np.array(make_array(temp1[1])).T,np.array([temp2[1]]),temp3,(np.array(make_array(temp4[1])).T),np.array([make_array2(temp4[2])])))
                     #         [9-features, seq, exxist_seq, cat dist_map,cat dist_map (non-zero), ss_1d, ss_2d]
-                data[i] = [tempF, temp1[0],temp1[1],temp_resi_map,d,temp2[1],temp2[0]]
+                data_val[i] = [tempF, temp1[0],temp1[1],temp_resi_map,d,temp2[1],temp2[0]]
             except ValueError:
                 print ('%s had ValueError, probably some of inputs are of wrong dimention. Data thrown away ' %i)
                 
-val_n = len(data) - train_n
+val_n = len(data_val) 
 print ('training samples %s from %s PDBid, val samples %s from %s PDBid' %(train_n,len(data1_keys_train),val_n,len(data1_keys_val)))            
 #np.save('data_all.npy',data)
 dictt = {}
 length = []
-for i in data.keys():
+for i in data_train.keys():
 	if tuple(i.split('_')[0:2]) not in dictt :
 		dictt[tuple(i.split('_')[0:2])] = 1
 	else :
 		dictt[tuple(i.split('_')[0:2])] += 1
-	length  += [len(data[i][1]),]
+	length  += [len(data_train[i][1]),]
 #plt.hist([dictt[x] for x in dictt],100);plt.show()
 #plt.hist(length,100);plt.show()
+# initialzie train data here
 data2_x = []
 data2_y = []
 data2_y_nan = []
 data2_y_ss = []
 data2_name = []
-# Import MINST data
-#from tensorflow.examples.tutorials.mnist import input_data
-#st = input_data.read_data_sets("MNIST_data/", one_hot=True)
-
-
-
-for i in data:
-        data2_x += [data[i][0],]
-        data2_y += [data[i][3],]
-        data2_y_nan += [data[i][-3],]
-        data2_y_ss += [data[i][-1],]
+for i in data_train:
+        data2_x += [data_train[i][0],]
+        data2_y += [data_train[i][3],]
+        data2_y_nan += [data_train[i][-3],]
+        data2_y_ss += [data_train[i][-1],]
         data2_name += [i,]
-print (len(data2_y),'number of training samples')
+
+# initialzie val data here
+data2_x_val = []
+data2_y_val = []
+data2_y_nan_val = []
+data2_y_ss_val = []
+data2_name_val = []       
+for i in data_val:
+        data2_x_val += [data_val[i][0],]
+        data2_y_val += [data_val[i][3],]
+        data2_y_nan_val += [data_val[i][-3],]
+        data2_y_ss_val += [data_val[i][-1],]
+        data2_name_val += [i,]
+print (len(data2_y),'finished intitialising total number of training/val samples')
 #data2_y = np.array(data2_y)
 #data2_x = np.array(data2_x)
 # Create some wrappers for simplicity
+print  (data2_name_val  )
 epsilon = 1e-3
 def batch_normalization(x):
     mean,var = tf.nn.moments(x,[1,2])
@@ -183,7 +193,7 @@ def average_pooling2d(x,window = (2,2),strides=1,padding='same'):
     return tf.nn.relu(x)
 # Parameters
 learning_rate = 0.0001
-training_epochs = 10 
+training_epochs = 20 
 batch_size = 1
 display_step = 1
 n_classes =5
@@ -379,7 +389,7 @@ conv2ba = conv2d(conv1,weights['2_wc1ba'],biases['2_bc1ba'])
 conv2bb = conv2d(conv2ba,weights['2_wc1bb'],biases['2_bc1bb'])
 conv2ca = average_pooling2d(conv1,(1,2),1,padding='same')
 conv2cb = conv2d(conv1,weights['2_wc1c'],biases['2_bc1c'])
-conv2da = conv2d(conv1,weights['2_wc1d'],biases['2_bc1d']) #not to confuse name with function
+conv2da = conv2d(conv1,weights['2_wc1d'],biases['2_bc1d']) #not to over helper function with name, changed variable from conv2d to conv2da
 conv2p = tf.concat([conv2ac,conv2bb,conv2cb,conv2da],3)
 conv2 =  average_pooling2d(conv2p ,  (1,2),1,padding='same')
 final = []
@@ -468,9 +478,6 @@ def accuracy(mat_model,answer):
             else:
                 score += [0,]
     return np.mean(score)
-# Evaluate model
-##correct_pred = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
-##accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
 saver = tf.train.Saver()
 # Initializing the variables
@@ -483,6 +490,7 @@ result = {}
 random.seed(0)
 shuffle = range(len(data2_x))
 random.shuffle(shuffle)
+text = ''
 for epoch in range(training_epochs):
     avg_cost = 0.
     val_cost = 0.
@@ -491,27 +499,27 @@ for epoch in range(training_epochs):
     total_batch = train_n#int(mnist.train.num_examples/batch_size)
     # Loop over all batches
     for i in shuffle:
-        if i < train_n:
-            if i%10000 == 9999:
-                print (i,train_n*avg_cost/(i+1))
-            batch_x, batch_y = np.array([[data2_x[i],],]),np.array([data2_y[i],])
-            batch_y_nan,batch_y_ss = np.array([data2_y_nan[i]]),np.array([data2_y_ss[i]])
-            batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
-            # Run optimization op (backprop) and cost op (to get loss value)
-            _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,
-                                                          resi_map0: batch_y,
-                                                          above_zero : batch_y_nan,
-                                                          ss_2d : batch_y_ss})
-            pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
-                                                 above_zero : batch_y_nan, ss_2d : batch_y_ss})
-            train_acc += [accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0]),]
-            # Compute average loss
-            avg_cost += c / total_batch
-            #print (train_acc)
-            #print (c),
-        else:
-            batch_x, batch_y = np.array([[data2_x[i],],]),np.array([data2_y[i],])
-            batch_y_nan,batch_y_ss = np.array([data2_y_nan[i]]),np.array([data2_y_ss[i]])
+        #print (i)
+        if i%10000 == 9999:
+            print (i,train_n*avg_cost/(i+1),np.mean(train_acc))
+        batch_x, batch_y = np.array([[data2_x[i],],]),np.array([data2_y[i],])
+        batch_y_nan,batch_y_ss = np.array([data2_y_nan[i]]),np.array([data2_y_ss[i]])
+        batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
+        # Run optimization op (backprop) and cost op (to get loss value)
+        _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,
+                                                      resi_map0: batch_y,
+                                                      above_zero : batch_y_nan,
+                                                      ss_2d : batch_y_ss})
+        pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
+                                             above_zero : batch_y_nan, ss_2d : batch_y_ss})
+        train_acc += [accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0]),]
+        # Compute average loss
+        avg_cost += c / total_batch
+        #print (train_acc)
+        #print (c),
+    for i in range(len(data2_x_val)):
+            batch_x, batch_y = np.array([[data2_x_val[i],],]),np.array([data2_y_val[i],])
+            batch_y_nan,batch_y_ss = np.array([data2_y_nan_val[i]]),np.array([data2_y_ss_val[i]])
             batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
             cost_i  = sess.run( cost, feed_dict={x: batch_x,resi_map0: batch_y,
                                                  above_zero : batch_y_nan, ss_2d : batch_y_ss})
@@ -520,12 +528,15 @@ for epoch in range(training_epochs):
                                                  above_zero : batch_y_nan, ss_2d : batch_y_ss})
             val_acc += [accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0]),]
     # Display logs per epoch step
-    if epoch % display_step == 0:
-        print ("Epoch:", '%04d' % (epoch+1), "cost=", 
+    f1 = open('updates.log','w')
+    text += str(avg_cost)+'  '+str(np.mean(train_acc))+'\n'
+    text += str(val_cost)+'  '+str(np.mean(val_acc))+'\n\n'
+    print ("Epoch:", '%04d' % (epoch+1), "cost=", 
             "{:.9f}".format(avg_cost),np.mean(train_acc))
-    if epoch % display_step == 0:
-        print ("Epoch:", '%04d' % (epoch+1), "cost=", 
+    print ("Epoch:", '%04d' % (epoch+1), "cost=", 
             "{:.9f}".format(val_cost),np.mean(val_acc))
+    f1.write(text)
+    f1.close()
     save_path = saver.save(sess,'model300.ckpt')
     result[epoch] = [avg_cost,val_cost]
     pred = sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
@@ -542,93 +553,4 @@ plt.plot(range(0,training_epochs),[result[i][0] for i in result],label='Train')
 plt.plot(range(0,training_epochs),[result[i][1] for i in result],label='Val')
 plt.legend();plt.ylabel('Logloss cost') ; plt.xlabel('epoch')
 plt.savefig('Train_curveLg.png')
-result_cord = {}
-for i in range(482):
-        batch_x, batch_y = np.array([[data2_x[i],],]),np.array([data2_y[i],])
-        batch_y_nan,batch_y_ss = np.array([data2_y_nan[i]]),np.array([data2_y_ss[i]])
-        batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
-        result_cord[(i,data2_name[i])] = data[data2_name[i]] + [sess.run(out, feed_dict={x: batch_x,resi_map0: batch_y,
-                                                                                         above_zero : batch_y_nan, ss_2d : batch_y_ss}),]
-np.save('result_cord.npy',result_cord)
-fig, ax = plt.subplots(2, sharex=True,figsize=(7, 15))
-ax[1].imshow(sess.run( resi_map, feed_dict={x: batch_x,resi_map0: batch_y,above_zero : batch_y_nan, ss_2d : batch_y_ss})[0,:,:,0])
-ax[0].imshow(sess.run( out2, feed_dict={x: batch_x,resi_map0: batch_y,above_zero : batch_y_nan, ss_2d : batch_y_ss})[0,:,:,0])
-die
-def conv_net(x, weights, biases, dropout):
-    # Reshape input picture
-    x = tf.reshape(x, shape=[-1, 28, 28, 1])
-    # Convolution Layer
-    conv1 = conv2d(x, weights['wc1'], biases['bc1'])
-    # Max Pooling (down-sampling)
-    conv1 = maxpool2d(conv1, k=2)
 
-    # Convolution Layer
-    conv2 = conv2d(conv1, weights['wc2'], biases['bc2'])
-    # Max Pooling (down-sampling)
-    conv2 = maxpool2d(conv2, k=2)
-
-    # Fully connected layer
-    # Reshape conv2 output to fit fully connected layer input
-    fc1 = tf.reshape(conv2, [-1, weights['wd1'].get_shape().as_list()[0]])
-    fc1 = tf.add(tf.matmul(fc1, weights['wd1']), biases['bd1'])
-    fc1 = tf.nn.relu(fc1)
-    # Apply Dropout
-    fc1 = tf.nn.dropout(fc1, dropout)
-
-    # Output, class prediction
-    out = tf.add(tf.matmul(fc1, weights['out']), biases['out'])
-    return out
-
-seq_input = Input(shape=(100,5,1))
-
-ss_input = Input(shape=(100,100,1))
-
-x = conv2d_bn(seq_input, 32, 10, 5, strides=(1, 1), padding='same')
-#x = conv2d_bn(x, 32, 3, 3, strides=(1, 1), padding='same')
-#x = conv2d_bn(x, 32, 3, 3, strides=(1, 1), padding='same')
-def multiply(x,n):
-    x_prime = tf.reshape(x, (-1, n, 1))
-    x_transpose = tf.transpose(x_prime, perm=[0,2, 1])
-    return tf.matmul(x_transpose,x_prime)
-
-
-#Lambda(lambda x: multiply(x, n), output_shape =(n, n))
-
-# Input is 100 * 5 matrix
-seq_input = Input(shape=(100,5))
-
-# convert to tensor and get 10 layers
-x = layers.Reshape((100,5,1))(seq_input)
-x = Conv2D( filters =10 , kernel_size = (3,3),strides=(1, 1),padding='same') ( x)
-
-# get outer product to get 100*100 matrix for each layer
-final = {}
-def matmul(mat_x):
-    y = K.tf.matmul( mat_x, mat_x, transpose_b=True )
-    return y
-def multiply(x,n=100):
-    x_prime = tf.reshape(x, (-1, n, 5))
-    x_transpose = tf.transpose(x_prime, perm=[0,2, 1])
-    return tf.matmul(x_prime,x_transpose)
-for i in range(0,10):
-    mat_x = x[:,:,:,i]
-    final[i] = Lambda(lambda x: multiply(x, n=100) , output_shape = (100,100))(mat_x)#Lambda( matmul,output_shape= (-1,100, 100,1) ) (mat_x)
-    #final[i] =  K.dot(mat_x,K.permute_dimensions(mat_x,(0,2,1)))
-    final[i] = K.reshape(final[i],(-1,100,100,1))
-    
-y = merge([ final[idx] for idx in final],mode='concat', concat_axis=3)
-#y = Reshape((100,100,10))(y)
-z = Activation('relu')(y)
-model = Model ([seq_input,ss_input],z)
-
-import tensorflow as tf
-sess = K.get_session()
-q=K.eval
-from keras import backend as K
-#K.set_session(sess)
-with sess.as_default():
-    x = [[1,1],[3,4],[5,6]]
-    z = tf.Variable(x)
-    z2 = K.reshape(z,(6,2))
-    z.eval()
-    die
