@@ -219,7 +219,7 @@ outb_p = tf.layers.average_pooling2d(outb,(2,2,),1,padding='same')
 outc = conv2d(outb_p,weights['8_outc'],biases['8_outc'])
 out = conv2d(outc,weights['9_out2'],biases['9_out2'],relu=False)
 out_softmax = tf.nn.softmax(out,-1,name='softmax')
-#\out_norm = batch_normalization(out)
+out_norm = batch_normalization(out)
 # kill entries of nan so they are not in cost, not needed ???
 #out_softmax2 = tf.multiply(out_softmax,above_zero,name='zero') 
 
