@@ -50,14 +50,14 @@ def get_mat(i):
     print seq
     #plt.imshow(temp_resi_map.astype(np.float32));plt.show()
     return temp_resi_map.astype(np.float32)   
-answer = get_mat(i)            
+answer = np.argmax(get_mat(i),2)            
 for i in models:
-    mat_model = get_mat(i)
-    score = []
+    mat_model = np.argmax(get_mat(i),2)
+    score = [[],[],[]]
     for i in range(0,answer.shape[0]):
         for j in range(i+1,answer.shape[0]):
-            if np.sum(answer[i,j] == mat_model[i,j])==3:
-                score += [1,]
+            if answer[i,j] == mat_model[i,j]:
+                score[answer[i,j]] += [1,]
             else:
-                score += [0,]
-    print i,np.mean(score)
+                score[answer[i,j]] += [0,]
+    print i,np.mean([np.mean(score[0]),np.mean(score[1]),np.mean(score[2])])

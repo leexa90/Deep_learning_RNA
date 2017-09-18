@@ -206,7 +206,7 @@ def average_pooling2d(x,window = (2,2),strides=1,padding='same'):
     x = batch_normalization (x)
     return tf.nn.relu(x)
 # Parameters
-learning_rate = 0.0001
+learning_rate = 0.000001
 training_epochs = 20 
 batch_size = 1
 display_step = 1
@@ -479,20 +479,20 @@ out_softmax = tf.nn.softmax(out,-1,name='softmax')
 
 # Define loss and optimizer
 logit_weight = tf.constant([weight_coeff1,weight_coeff2,weight_coeff3],tf.float32)
-log_loss =tf.nn.softmax_cross_entropy_with_logits(logits = tf.multiply(out,logit_weight), labels = resi_map ,dim=-1)
+log_loss =tf.nn.softmax_cross_entropy_with_logits(logits = out, labels = tf.multiply(resi_map,logit_weight) ,dim=-1)
 #log_loss = -tf.reduce_sum(tf.multiply(resi_map ,tf.log(out_softmax+10**-15)),-1)
 cost = tf.reduce_mean(log_loss)
 #cost = tf.div(sum_logLoss,tf.reduce_sum(above_zero))
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 def accuracy(mat_model,answer):
-    score = []
+    score = [[],[],[]]
     for i in range(0,answer.shape[1]):
         for j in range(i+1,answer.shape[1]):
             if answer[i,j] == mat_model[i,j]:
-                score += [1,]
+                score[answer[i,j]] += [1,]
             else:
-                score += [0,]
-    return np.mean(score)
+                score[answer[i,j]] += [0,]
+    return np.mean([np.mean(score[0]),np.mean(score[1]),np.mean(score[2])])
 
 saver = tf.train.Saver()
 # Initializing the variables
@@ -513,7 +513,7 @@ for epoch in range(training_epochs):
     val_acc = []
     total_batch = train_n#int(mnist.train.num_examples/batch_size)
     # Loop over all batches
-    for i in shuffle:
+    for i in shuffle[0:1]:
         #print (i)
         if i%10000 == 9999:
             print (i,train_n*avg_cost/(i+1),np.mean(train_acc))
@@ -541,7 +541,7 @@ for epoch in range(training_epochs):
             val_cost += cost_i/val_n
             pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
                                                  above_zero : batch_y_nan, ss_2d : batch_y_ss})
-            val_acc += [accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0]),]
+            val_acc += [accuracy(np.argmax(pred+np.tranpose(pred,(0,2,1,3)),3)[0],np.argmax(batch_y,3)[0]),]
     # Display logs per epoch step
     f1 = open('updates.log','w')
     text += str(avg_cost)+'  '+str(np.mean(train_acc))+'\n'
