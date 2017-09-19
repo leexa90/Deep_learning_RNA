@@ -113,7 +113,7 @@ for i in data1_keys_val:
         if i in data2.keys():
             try:
                 temp1 = data1[i]
-                a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+                a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 16) & (data1[i][2] >= 8)*1,(data1[i][2] > 16)*1
                 temp_resi_map = np.stack((a,b,c),axis=2)
                 d = -1*(np.isnan(data1[i][2])-1) #non-nan values ==1 , nan =0
                 d = np.stack((d,d,d),axis=2)
@@ -206,7 +206,7 @@ def average_pooling2d(x,window = (2,2),strides=1,padding='same'):
     x = batch_normalization (x)
     return tf.nn.relu(x)
 # Parameters
-learning_rate = 0.0001
+learning_rate = 0.001
 training_epochs = 20 
 batch_size = 1
 display_step = 1
@@ -483,7 +483,7 @@ log_loss =tf.nn.softmax_cross_entropy_with_logits(logits = out, labels = tf.mult
 #log_loss = -tf.reduce_sum(tf.multiply(resi_map ,tf.log(out_softmax+10**-15)),-1)
 cost = tf.reduce_mean(log_loss)
 #cost = tf.div(sum_logLoss,tf.reduce_sum(above_zero))
-optimizer = tf.train.AdamOptimizer(epsilon = 0.01,learning_rate=learning_rate).minimize(cost)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
 def accuracy(mat_model,answer):
     score = [[],[],[]]
     for i in range(0,answer.shape[1]):
