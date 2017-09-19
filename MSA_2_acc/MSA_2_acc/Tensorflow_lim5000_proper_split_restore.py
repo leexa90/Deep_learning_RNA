@@ -146,28 +146,13 @@ data2_y = []
 data2_y_nan = []
 data2_y_ss = []
 data2_name = []
-classweight1 = 0.
-classweight2 = 0.
-classweight3 = 0.
-
 for i in data_train:
         data2_x += [data_train[i][0],]
         data2_y += [data_train[i][3],]
         data2_y_nan += [data_train[i][-3],]
         data2_y_ss += [data_train[i][-1],]
         data2_name += [i,]
-        classweight1 += np.sum(data2_y[0][:,:,0] ==1)
-        classweight2 += np.sum(data2_y[0][:,:,1] ==1)
-        classweight3 += np.sum(data2_y[0][:,:,2] ==1)
-weight1 = (classweight1 / (classweight1+classweight2+classweight3))**-1
-weight2 = (classweight2 / (classweight1+classweight2+classweight3))**-1
-weight3 = (classweight3 / (classweight1+classweight2+classweight3))**-1
-weight_coeff1 = weight1 / (weight1+weight2+weight3) 
-weight_coeff2 = weight2 / (weight1+weight2+weight3) 
-weight_coeff3 = weight3 / (weight1+weight2+weight3)
-print ('Class 1 has %s percent, given %s weight' % (weight1**-1, weight_coeff1))
-print ('Class 2 has %s percent, given %s weight' % (weight2**-1, weight_coeff2))
-print ('Class 3 has %s percent, given %s weight' % (weight3**-1, weight_coeff3))
+
 # initialzie val data here
 data2_x_val = []
 data2_y_val = []
@@ -497,9 +482,7 @@ out_softmax = tf.nn.softmax(out,-1,name='softmax')
 
 # Define loss and optimizer
 
-#log_loss =tf.nn.softmax_cross_entropy_with_logits(logits = out , labels = resi_map ,dim=-1)
-log_loss = -tf.reduce_sum(tf.mul(resi_map * tf.log(softmax + epsilon), coefficients), reduction_indices=[1])
-
+log_loss =tf.nn.softmax_cross_entropy_with_logits(logits = out , labels = resi_map ,dim=-1)
 cost = tf.reduce_mean(log_loss)
 #cost = tf.div(sum_logLoss,tf.reduce_sum(above_zero))
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
@@ -531,7 +514,7 @@ for epoch in range(training_epochs):
     val_acc = []
     total_batch = train_n#int(mnist.train.num_examples/batch_size)
     # Loop over all batches
-    for i in shuffle[0:0]:
+    for i in shuffle[0:1]:
         print (i)
         if i%10000 == 9999:
             print (i,train_n*avg_cost/(i+1),np.mean(train_acc))
@@ -561,7 +544,6 @@ for epoch in range(training_epochs):
                                                  above_zero : batch_y_nan, ss_2d : batch_y_ss})
             val_acc += [accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0]),]
     # Display logs per epoch step
-    die
     if epoch % display_step == 0:
         print ("Epoch:", '%04d' % (epoch+1), "cost=", 
             "{:.9f}".format(avg_cost),np.mean(train_acc))
@@ -584,21 +566,4 @@ plt.plot(range(0,training_epochs),[result[i][0] for i in result],label='Train')
 plt.plot(range(0,training_epochs),[result[i][1] for i in result],label='Val')
 plt.legend();plt.ylabel('Logloss cost') ; plt.xlabel('epoch')
 plt.savefig('Train_curveLg.png')
-
-for i in range(len(data2_y_val)):
-    print(data2_name_val[i])
-    f, ax = plt.subplots(1,2,figsize=(10, 6))
-    batch_x, batch_y = np.array([[data2_x_val[i],],]),np.array([data2_y_val[i],])
-    batch_y_nan,batch_y_ss = np.array([data2_y_nan_val[i]]),np.array([data2_y_ss_val[i]])
-    batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
-    pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
-                                         above_zero : batch_y_nan, ss_2d : batch_y_ss})
-    ax[0].imshow(batch_y[0].astype(np.float32))
-    ax[1].imshow(pred[0])
-    ax[1].set_xlabel(str(accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0])))
-    ax[0].set_xlabel(data2_name_val[i])
-    plt.savefig('Result'+data2_name_val[i]+'.png')
-    plt.clf()
-        
-
 

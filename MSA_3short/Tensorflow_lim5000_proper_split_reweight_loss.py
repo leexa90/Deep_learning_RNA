@@ -206,7 +206,7 @@ def average_pooling2d(x,window = (2,2),strides=1,padding='same'):
     x = batch_normalization (x)
     return tf.nn.relu(x)
 # Parameters
-learning_rate = 0.0001
+learning_rate = 0.00001
 training_epochs = 20 
 batch_size = 1
 display_step = 1

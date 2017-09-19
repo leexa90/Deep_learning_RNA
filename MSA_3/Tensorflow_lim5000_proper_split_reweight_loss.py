@@ -206,7 +206,7 @@ def average_pooling2d(x,window = (2,2),strides=1,padding='same'):
     x = batch_normalization (x)
     return tf.nn.relu(x)
 # Parameters
-learning_rate = 0.000001
+learning_rate = 0.0001
 training_epochs = 20 
 batch_size = 1
 display_step = 1
@@ -513,7 +513,7 @@ for epoch in range(training_epochs):
     val_acc = []
     total_batch = train_n#int(mnist.train.num_examples/batch_size)
     # Loop over all batches
-    for i in shuffle[0:1]:
+    for i in shuffle:
         #print (i)
         if i%10000 == 9999:
             print (i,train_n*avg_cost/(i+1),np.mean(train_acc))
@@ -541,7 +541,7 @@ for epoch in range(training_epochs):
             val_cost += cost_i/val_n
             pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
                                                  above_zero : batch_y_nan, ss_2d : batch_y_ss})
-            val_acc += [accuracy(np.argmax(pred+np.tranpose(pred,(0,2,1,3)),3)[0],np.argmax(batch_y,3)[0]),]
+            val_acc += [accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0]),]
     # Display logs per epoch step
     f1 = open('updates.log','w')
     text += str(avg_cost)+'  '+str(np.mean(train_acc))+'\n'

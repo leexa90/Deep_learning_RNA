@@ -90,7 +90,7 @@ for i in data1_keys:
             tempF = np.concatenate((np.array(make_array(temp1[1])).T,np.array([temp2[1]]),temp3,(np.array(make_array(temp4[1])).T),np.array([make_array2(temp4[2])])))
                 #         [9-features, seq, exxist_seq, cat dist_map,cat dist_map (non-zero), ss_1d, ss_2d]
             data[i] = [tempF, temp1[0],temp1[1],temp_resi_map,d,temp2[1],temp2[0]]
-            for window_tup in [(35,1),(50,2),(75,3),(100,4),(150,6),(200,8),(400,16)]:
+            for window_tup in [(35,1),(50,2),(75,3),(100,4),(150,6),(200,8),(300,12),(400,16)]:
                 window, jump = window_tup[0], window_tup[1]
                 for repeat in range(0,len(data1[i][0]) - window+1,jump):
                     data[i+'_'+str(window)+'_'+str(repeat)] = [tempF[:,repeat:repeat+window],
@@ -153,7 +153,7 @@ def average_pooling2d(x,window = (2,2),strides=1,padding='same'):
     return tf.nn.relu(x)
 # Parameters
 learning_rate = 0.001
-training_epochs = 40 
+training_epochs = 10 
 batch_size = 1
 display_step = 1
 n_classes =5

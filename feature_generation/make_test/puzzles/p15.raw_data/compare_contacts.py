@@ -24,9 +24,9 @@ def get_mat(i):
     seq = ''
     temp_sol = {}
     for line in f1:
-        if line[17:20].strip() in ['A','U','G','C']:
+        if line[17:20].strip() in  ['A','U','G','C','ADE','URA','GUA','CYT']:
             if line[12:16].strip() == 'P':
-                seq  += line[17:20].strip()
+                seq  += line[17:20].strip()[0]
                 cord1 = np.float(line[30:38].strip())
                 cord2 = np.float(line[38:46].strip())
                 cord3 = np.float(line[46:54].strip())
@@ -50,9 +50,10 @@ def get_mat(i):
     print seq
     #plt.imshow(temp_resi_map.astype(np.float32));plt.show()
     return temp_resi_map.astype(np.float32)   
-answer = np.argmax(get_mat(i),2)            
-for i in models:
-    mat_model = np.argmax(get_mat(i),2)
+answer = np.argmax(get_mat(solution[0]),2)
+result = []
+for ii in models:
+    mat_model = np.argmax(get_mat(ii),2)
     score = [[],[],[]]
     for i in range(0,answer.shape[0]):
         for j in range(i+1,answer.shape[0]):
@@ -60,4 +61,7 @@ for i in models:
                 score[answer[i,j]] += [1,]
             else:
                 score[answer[i,j]] += [0,]
-    print i,np.mean([np.mean(score[0]),np.mean(score[1]),np.mean(score[2])])
+    print i,np.mean([np.mean(score[0]),np.mean(score[1]),np.mean(score[2])]),mat_model.shape
+    result += [np.mean([np.mean(score[0]),np.mean(score[1]),np.mean(score[2])]),]
+print np.mean(result)
+print np.std(result)

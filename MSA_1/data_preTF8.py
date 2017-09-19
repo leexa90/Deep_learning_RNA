@@ -71,8 +71,8 @@ def make_array2(str):
         else:
             temp[i] = int(str[i])*10
     return temp
-data1_keys = data1.keys()
 random.seed(0)
+data1_keys = data1.keys()
 random.shuffle(data1_keys)
 for i in data1_keys:
     if len(data1[i][0]) >= 35:
@@ -132,7 +132,7 @@ def conv2d(x, W, b, strides=1,relu=True,padding='SAME'):
 
 # Parameters
 learning_rate = 0.001
-training_epochs = 50
+training_epochs = 30
 batch_size = 100
 display_step = 1
 n_classes =5

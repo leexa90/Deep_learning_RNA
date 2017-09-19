@@ -537,7 +537,7 @@ for epoch in range(training_epochs):
             "{:.9f}".format(val_cost),np.mean(val_acc))
     f1.write(text)
     f1.close()
-    save_path = saver.save(sess,'model300.ckpt')
+    save_path = saver.save(sess,'model300_long.ckpt')
     result[epoch] = [avg_cost,val_cost]
     pred = sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
                                              above_zero : batch_y_nan, ss_2d : batch_y_ss})

@@ -1,0 +1,53 @@
+Using TensorFlow backend.
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcublas.so.8.0 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcudnn.so.5 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcufft.so.8.0 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcurand.so.8.0 locally
+data_preTF8_7_layerInception.py:81: RuntimeWarning: invalid value encountered in less
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+data_preTF8_7_layerInception.py:81: RuntimeWarning: invalid value encountered in less_equal
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+data_preTF8_7_layerInception.py:81: RuntimeWarning: invalid value encountered in greater_equal
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+data_preTF8_7_layerInception.py:81: RuntimeWarning: invalid value encountered in greater
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:885] Found device 0 with properties: 
+name: Tesla K40t
+major: 3 minor: 5 memoryClockRate (GHz) 0.8755
+pciBusID 0000:82:00.0
+Total memory: 11.17GiB
+Free memory: 11.10GiB
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:906] DMA: 0 
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:916] 0:   Y 
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:975] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Tesla K40t, pci bus id: 0000:82:00.0)
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:247] PoolAllocator: After 1762 get requests, put_count=1622 evicted_count=1000 eviction_rate=0.616523 and unsatisfied allocation rate=0.703746
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:259] Raising pool_size_limit_ from 100 to 110
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:247] PoolAllocator: After 2643 get requests, put_count=2424 evicted_count=1000 eviction_rate=0.412541 and unsatisfied allocation rate=0.469921
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:259] Raising pool_size_limit_ from 256 to 281
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:247] PoolAllocator: After 59027 get requests, put_count=59022 evicted_count=1000 eviction_rate=0.0169428 and unsatisfied allocation rate=0.0180256
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:259] Raising pool_size_limit_ from 655 to 720
+Traceback (most recent call last):
+  File "data_preTF8_7_layerInception.py", line 459, in <module>
+    plt.plot(range(0,training_epochs),[result[i][0] for i in result],label='Train')
+  File "/app/tensorflow/1.0/lib/python2.7/site-packages/matplotlib/pyplot.py", line 3306, in plot
+    ax = gca()
+  File "/app/tensorflow/1.0/lib/python2.7/site-packages/matplotlib/pyplot.py", line 950, in gca
+    return gcf().gca(**kwargs)
+  File "/app/tensorflow/1.0/lib/python2.7/site-packages/matplotlib/pyplot.py", line 586, in gcf
+    return figure()
+  File "/app/tensorflow/1.0/lib/python2.7/site-packages/matplotlib/pyplot.py", line 535, in figure
+    **kwargs)
+  File "/app/tensorflow/1.0/lib/python2.7/site-packages/matplotlib/backends/backend_tkagg.py", line 81, in new_figure_manager
+    return new_figure_manager_given_figure(num, figure)
+  File "/app/tensorflow/1.0/lib/python2.7/site-packages/matplotlib/backends/backend_tkagg.py", line 89, in new_figure_manager_given_figure
+    window = Tk.Tk()
+  File "/app/python/intel/2.7.12/lib/python2.7/lib-tk/Tkinter.py", line 1815, in __init__
+    self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+_tkinter.TclError: Can't find a usable init.tcl in the following directories: 
+    /usr/local/lib/tcl8.6 /app/tensorflow/1.0/lib/tcl8.6 /app/tensorflow/lib/tcl8.6 /app/tensorflow/1.0/library /app/tensorflow/library /app/tensorflow/tcl8.6.5/library /app/tcl8.6.5/library
+
+
+
+This probably means that Tcl wasn't installed properly.
+
