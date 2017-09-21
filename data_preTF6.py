@@ -246,6 +246,8 @@ for epoch in range(training_epochs):
 ##        #print(sess.run( resi_map, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:10,0:10,0])
 ##        print (sess.run( y, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:10,0:10,0])
 print ("Optimization Finished!")
+print (result)
+np.save('result.npy',result)
 save_path = saver.save(sess,'model300.ckpt')
 plt.plot(range(0,300),[result[i][0] for i in result],label='Train')
 plt.plot(range(0,300),[result[i][1] for i in result],label='Val')

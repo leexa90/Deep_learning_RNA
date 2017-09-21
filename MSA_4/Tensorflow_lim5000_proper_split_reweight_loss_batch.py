@@ -499,7 +499,7 @@ saver = tf.train.Saver()
 init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)
-#saver.restore(sess,'model300.ckpt')
+saver.restore(sess,'./model300_reweigh_loss.ckpt')
 # Training cycle
 result = {}
 random.seed(0)

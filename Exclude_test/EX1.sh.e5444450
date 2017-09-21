@@ -1,0 +1,12 @@
+Using TensorFlow backend.
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcublas.so.8.0 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcudnn.so.5 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcufft.so.8.0 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcurand.so.8.0 locally
+Traceback (most recent call last):
+  File "Tensorflow_lim5000_proper_split_reweight_loss_batch.py", line 33, in <module>
+    data1 = np.load('../data_lim5000_nan_excludeTest.npy.zip')['data_lim5000_nan_excludeTest.npy'].item() #contains 480 train examples
+  File "/app/tensorflow/1.0/lib/python2.7/site-packages/numpy/lib/npyio.py", line 370, in load
+    fid = open(file, "rb")
+IOError: [Errno 2] No such file or directory: '../data_lim5000_nan_excludeTest.npy.zip'

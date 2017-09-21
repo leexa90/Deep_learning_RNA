@@ -207,7 +207,7 @@ def average_pooling2d(x,window = (2,2),strides=1,padding='same'):
     x = batch_normalization (x)
     return tf.nn.relu(x)
 # Parameters
-learning_rate = 0.0001
+learning_rate = 0.00001
 training_epochs = 40 
 batch_size = 1
 display_step = 1
@@ -500,7 +500,7 @@ saver = tf.train.Saver()
 init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)
-saver.restore(sess,'model300_reweigh_loss.ckpt')
+saver.restore(sess,'./model300_reweigh_loss.ckpt')
 # Training cycle
 result = {}
 random.seed(0)

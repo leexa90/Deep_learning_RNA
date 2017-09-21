@@ -132,8 +132,8 @@ weights = {
     # 5x5 conv, 32 inputs, 64 outputs
     'wc2': tf.Variable(tf.random_normal([1, 9, 32, 64])),
     # 5x5 conv, 64 inputs, 64 outputs
-    'wc3a': tf.Variable(tf.random_normal([1, 10, 64, 64])),
-    'wc3b': tf.Variable(tf.random_normal([10, 1, 64, 64])),    
+    'wc3a': tf.Variable(tf.random_normal([5, 10, 64, 64])),
+    'wc3b': tf.Variable(tf.random_normal([10, 5, 64, 64])),    
     # fully connected, 7*7*64 inputs, 1024 outputs
     'wd1': tf.Variable(tf.random_normal([7*7*64, 1024])),
     # 1024 inputs, 10 outputs (class prediction)
@@ -242,6 +242,8 @@ for epoch in range(training_epochs):
 ##        print (sess.run( y, feed_dict={x: batch_x,resi_map0: batch_y})[0,0:10,0:10,0])
 print ("Optimization Finished!")
 save_path = saver.save(sess,'model300.ckpt')
+np.save('result.npy',result)
+print (result)
 plt.plot(range(0,300),[result[i][0] for i in result],label='Train')
 plt.plot(range(0,300),[result[i][1] for i in result],label='Val')
 plt.legend();plt.ylabel('Logloss cost') ; plt.xlabel('epoch')
