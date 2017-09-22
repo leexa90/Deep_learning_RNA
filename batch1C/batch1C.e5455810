@@ -1,0 +1,37 @@
+Using TensorFlow backend.
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcublas.so.8.0 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcudnn.so.5 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcufft.so.8.0 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:135] successfully opened CUDA library libcurand.so.8.0 locally
+batch.py:92: RuntimeWarning: invalid value encountered in less
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+batch.py:92: RuntimeWarning: invalid value encountered in less_equal
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+batch.py:92: RuntimeWarning: invalid value encountered in greater_equal
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+batch.py:92: RuntimeWarning: invalid value encountered in greater
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+batch.py:125: RuntimeWarning: invalid value encountered in less
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 16) & (data1[i][2] >= 8)*1,(data1[i][2] > 16)*1
+batch.py:125: RuntimeWarning: invalid value encountered in less_equal
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 16) & (data1[i][2] >= 8)*1,(data1[i][2] > 16)*1
+batch.py:125: RuntimeWarning: invalid value encountered in greater_equal
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 16) & (data1[i][2] >= 8)*1,(data1[i][2] > 16)*1
+batch.py:125: RuntimeWarning: invalid value encountered in greater
+  a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 16) & (data1[i][2] >= 8)*1,(data1[i][2] > 16)*1
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:885] Found device 0 with properties: 
+name: Tesla K40t
+major: 3 minor: 5 memoryClockRate (GHz) 0.8755
+pciBusID 0000:82:00.0
+Total memory: 11.17GiB
+Free memory: 11.10GiB
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:906] DMA: 0 
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:916] 0:   Y 
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:975] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Tesla K40t, pci bus id: 0000:82:00.0)
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:247] PoolAllocator: After 1711 get requests, put_count=1672 evicted_count=1000 eviction_rate=0.598086 and unsatisfied allocation rate=0.665693
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:259] Raising pool_size_limit_ from 100 to 110
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:247] PoolAllocator: After 1714 get requests, put_count=2009 evicted_count=1000 eviction_rate=0.49776 and unsatisfied allocation rate=0.424737
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:259] Raising pool_size_limit_ from 256 to 281
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:247] PoolAllocator: After 7521307 get requests, put_count=7521292 evicted_count=1000 eviction_rate=0.000132956 and unsatisfied allocation rate=0.000142794
+I tensorflow/core/common_runtime/gpu/pool_allocator.cc:247] PoolAllocator: After 7634007 get requests, put_count=7633987 evicted_count=11000 eviction_rate=0.00144092 and unsatisfied allocation rate=0.00145127

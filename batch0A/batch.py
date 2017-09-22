@@ -89,7 +89,7 @@ for i in data1_keys_train:
         if i in data2.keys():
             try:
                 temp1 = data1[i]
-                a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
+                a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 16) & (data1[i][2] >= 8)*1,(data1[i][2] > 16)*1
                 temp_resi_map = np.stack((a,b,c),axis=2)
                 d = -1*(np.isnan(data1[i][2])-1) #non-nan values ==1 , nan =0
                 d = np.stack((d,d,d),axis=2)
@@ -100,7 +100,7 @@ for i in data1_keys_train:
                 tempF = np.concatenate((np.array(make_array(temp1[1])).T,np.array([temp2[1]]),temp3,(np.array(make_array(temp4[1])).T),np.array([make_array2(temp4[2])])))
                     #         [9-features, seq, exxist_seq, cat dist_map,cat dist_map (non-zero), ss_1d, ss_2d]
                 #data[i] = [tempF, temp1[0],temp1[1],temp_resi_map,d,temp2[1],temp2[0]]
-                for window_tup in [(35,1),(50,1),(75,1),(100,1),(150,1),(200,1),(300,1),(400,1),(800,1)]:
+                for window_tup in [(30,5),(50,5),(75,5),(100,5),(150,5),(200,5),(300,5),(400,5),(800,5)]:
                     window, jump = window_tup[0], window_tup[1]
                     for repeat in range(0,len(data1[i][0]) - window+1,jump):
                         if np.mean(d[repeat:repeat+window,repeat:repeat+window,:]) > 0.9: 
@@ -236,7 +236,7 @@ def average_pooling2d(x,window = (2,2),strides=1,padding='same'):
     return tf.nn.relu(x)
 # Parameters
 learning_rate = 0.1
-training_epochs = 20 
+training_epochs = 80 
 batch_size = None
 #tf.flags.DEFINE_integer("batch_size", batch_size, "Batch size during training")
 #tf.flags.DEFINE_integer("eval_batch_size", 8, "Batch size during evaluation")
@@ -270,130 +270,130 @@ num7 = 32/4
 # Store layers weight & bias
 weights = {
     # 1D inception layer
-    '1_wc1aa': tf.Variable(tf.random_normal([15, 1, 1, num1])),
-    '1_wc1ab': tf.Variable(tf.random_normal([1, window, num1, num1])),
-    '1_wc1ac': tf.Variable(tf.random_normal([1, window, num1, num1])),
-    '1_wc1ba': tf.Variable(tf.random_normal([15, 1, 1, num1])),
-    '1_wc1bb': tf.Variable(tf.random_normal([1, window, num1, num1])),
-    '1_wc1c': tf.Variable(tf.random_normal([15, 1, 1, num1])),
-    '1_wc1d': tf.Variable(tf.random_normal([15, 1, 1, num1])),
+    '1_wc1aa': tf.Variable(tf.random_normal([15, 1, 1, num1],0,2)),
+    '1_wc1ab': tf.Variable(tf.random_normal([1, window, num1, num1],0,2)),
+    '1_wc1ac': tf.Variable(tf.random_normal([1, window, num1, num1],0,2)),
+    '1_wc1ba': tf.Variable(tf.random_normal([15, 1, 1, num1],0,2)),
+    '1_wc1bb': tf.Variable(tf.random_normal([1, window, num1, num1],0,2)),
+    '1_wc1c': tf.Variable(tf.random_normal([15, 1, 1, num1],0,2)),
+    '1_wc1d': tf.Variable(tf.random_normal([15, 1, 1, num1],0,2)),
     # 1D inception layer
-    '2_wc1aa': tf.Variable(tf.random_normal([1, 1, num1*4, num2])),
-    '2_wc1ab': tf.Variable(tf.random_normal([1, window, num2, num2])),
-    '2_wc1ac': tf.Variable(tf.random_normal([1, window, num2, num2])),
-    '2_wc1ba': tf.Variable(tf.random_normal([1, 1, num1*4, num2])),
-    '2_wc1bb': tf.Variable(tf.random_normal([1, window, num2, num2])),
-    '2_wc1c': tf.Variable(tf.random_normal([1, 1, num1*4,num2])),
-    '2_wc1d': tf.Variable(tf.random_normal([1, 1, num1*4, num2])),
+    '2_wc1aa': tf.Variable(tf.random_normal([1, 1, num1*4, num2],0,2)),
+    '2_wc1ab': tf.Variable(tf.random_normal([1, window, num2, num2],0,2)),
+    '2_wc1ac': tf.Variable(tf.random_normal([1, window, num2, num2],0,2)),
+    '2_wc1ba': tf.Variable(tf.random_normal([1, 1, num1*4, num2],0,2)),
+    '2_wc1bb': tf.Variable(tf.random_normal([1, window, num2, num2],0,2)),
+    '2_wc1c': tf.Variable(tf.random_normal([1, 1, num1*4,num2],0,2)),
+    '2_wc1d': tf.Variable(tf.random_normal([1, 1, num1*4, num2],0,2)),
     
     # 2D inception layer output 96 layer
-    '3_wc1aa': tf.Variable(tf.random_normal([1, 1, num2*4+1, num3])),
-    '3_wc1ab': tf.Variable(tf.random_normal([window, 1, num3, num3])),
-    '3_wc1ac': tf.Variable(tf.random_normal([1, window, num3, num3])),
-    '3_wc1ba': tf.Variable(tf.random_normal([1, 1, num2*4+1, num3])),
-    '3_wc1bb': tf.Variable(tf.random_normal([4, 4, num3, num3])),
-    '3_wc1c': tf.Variable(tf.random_normal([1, 1, num2*4+1, num3])),
-    '3_wc1d': tf.Variable(tf.random_normal([1, 1, num2*4+1, num3])),
+    '3_wc1aa': tf.Variable(tf.random_normal([1, 1, num2*4+1, num3],0,2)),
+    '3_wc1ab': tf.Variable(tf.random_normal([window, 1, num3, num3],0,2)),
+    '3_wc1ac': tf.Variable(tf.random_normal([1, window, num3, num3],0,2)),
+    '3_wc1ba': tf.Variable(tf.random_normal([1, 1, num2*4+1, num3],0,2)),
+    '3_wc1bb': tf.Variable(tf.random_normal([4, 4, num3, num3],0,2)),
+    '3_wc1c': tf.Variable(tf.random_normal([1, 1, num2*4+1, num3],0,2)),
+    '3_wc1d': tf.Variable(tf.random_normal([1, 1, num2*4+1, num3],0,2)),
     
-##    '4_wc1aa': tf.Variable(tf.random_normal([1, 1, num3*4, 16])),
-##    '4_wc1ab': tf.Variable(tf.random_normal([window, window, 16, 16])),
-##    '4_wc1ac': tf.Variable(tf.random_normal([window, window, 16, 16])),
-##    '4_wc1ba': tf.Variable(tf.random_normal([1, 1, num3*4, 16])),
-##    '4_wc1bb': tf.Variable(tf.random_normal([window, window, 16, 16])),
-##    '4_wc1c': tf.Variable(tf.random_normal([1, 1, num3*4, 16])),
-##    '4_wc1d': tf.Variable(tf.random_normal([1, 1, num3*4, 16])),
+##    '4_wc1aa': tf.Variable(tf.random_normal([1, 1, num3*4, 16],0,2)),
+##    '4_wc1ab': tf.Variable(tf.random_normal([window, window, 16, 16],0,2)),
+##    '4_wc1ac': tf.Variable(tf.random_normal([window, window, 16, 16],0,2)),
+##    '4_wc1ba': tf.Variable(tf.random_normal([1, 1, num3*4, 16],0,2)),
+##    '4_wc1bb': tf.Variable(tf.random_normal([window, window, 16, 16],0,2)),
+##    '4_wc1c': tf.Variable(tf.random_normal([1, 1, num3*4, 16],0,2)),
+##    '4_wc1d': tf.Variable(tf.random_normal([1, 1, num3*4, 16],0,2)),
 
-    '4_wc1aa': tf.Variable(tf.random_normal([1, 1, num3*4, num4])),
-    '4_wc1ab': tf.Variable(tf.random_normal([1, window, num4, num4])),
-    '4_wc1ac': tf.Variable(tf.random_normal([window, 1, num4, num4])),
-    '4_wc1ba': tf.Variable(tf.random_normal([1, 1, num3*4, num4])),
-    '4_wc1bb': tf.Variable(tf.random_normal([4, 4, num4, num4])),
-    '4_wc1c': tf.Variable(tf.random_normal([1, 1, num3*4, num4])),
-    '4_wc1d': tf.Variable(tf.random_normal([1, 1, num3*4, num4])),
+    '4_wc1aa': tf.Variable(tf.random_normal([1, 1, num3*4, num4],0,2)),
+    '4_wc1ab': tf.Variable(tf.random_normal([1, window, num4, num4],0,2)),
+    '4_wc1ac': tf.Variable(tf.random_normal([window, 1, num4, num4],0,2)),
+    '4_wc1ba': tf.Variable(tf.random_normal([1, 1, num3*4, num4],0,2)),
+    '4_wc1bb': tf.Variable(tf.random_normal([4, 4, num4, num4],0,2)),
+    '4_wc1c': tf.Variable(tf.random_normal([1, 1, num3*4, num4],0,2)),
+    '4_wc1d': tf.Variable(tf.random_normal([1, 1, num3*4, num4],0,2)),
 
-    '5_wc1aa': tf.Variable(tf.random_normal([1, 1, num4*4, num5])),
-    '5_wc1ab': tf.Variable(tf.random_normal([window, 1, num5, num5])),
-    '5_wc1ac': tf.Variable(tf.random_normal([1, window, num5, num5])),
-    '5_wc1ba': tf.Variable(tf.random_normal([1, 1, num4*4, num5])),
-    '5_wc1bb': tf.Variable(tf.random_normal([window/2, window/2, num5, num5])),
-    '5_wc1c': tf.Variable(tf.random_normal([1, 1, num4*4, num5])),
-    '5_wc1d': tf.Variable(tf.random_normal([1, 1, num4*4, num5])),
+    '5_wc1aa': tf.Variable(tf.random_normal([1, 1, num4*4, num5],0,2)),
+    '5_wc1ab': tf.Variable(tf.random_normal([window, 1, num5, num5],0,2)),
+    '5_wc1ac': tf.Variable(tf.random_normal([1, window, num5, num5],0,2)),
+    '5_wc1ba': tf.Variable(tf.random_normal([1, 1, num4*4, num5],0,2)),
+    '5_wc1bb': tf.Variable(tf.random_normal([window/2, window/2, num5, num5],0,2)),
+    '5_wc1c': tf.Variable(tf.random_normal([1, 1, num4*4, num5],0,2)),
+    '5_wc1d': tf.Variable(tf.random_normal([1, 1, num4*4, num5],0,2)),
 
-    '6_wc1aa': tf.Variable(tf.random_normal([1, 1, num5*4, num6])),
-    '6_wc1ab': tf.Variable(tf.random_normal([1, window, num6, num6])),
-    '6_wc1ac': tf.Variable(tf.random_normal([window, 1, num6, num6])),
-    '6_wc1ba': tf.Variable(tf.random_normal([1, 1, num5*4, num6])),
-    '6_wc1bb': tf.Variable(tf.random_normal([window/2, window/2, num6, num6])),
-    '6_wc1c': tf.Variable(tf.random_normal([1, 1, num5*4, num6])),
-    '6_wc1d': tf.Variable(tf.random_normal([1, 1, num5*4, num6])),
+    '6_wc1aa': tf.Variable(tf.random_normal([1, 1, num5*4, num6],0,2)),
+    '6_wc1ab': tf.Variable(tf.random_normal([1, window, num6, num6],0,2)),
+    '6_wc1ac': tf.Variable(tf.random_normal([window, 1, num6, num6],0,2)),
+    '6_wc1ba': tf.Variable(tf.random_normal([1, 1, num5*4, num6],0,2)),
+    '6_wc1bb': tf.Variable(tf.random_normal([window/2, window/2, num6, num6],0,2)),
+    '6_wc1c': tf.Variable(tf.random_normal([1, 1, num5*4, num6],0,2)),
+    '6_wc1d': tf.Variable(tf.random_normal([1, 1, num5*4, num6],0,2)),
 
-    '7_wc1aa': tf.Variable(tf.random_normal([1, 1, num6*4, num7])),
-    '7_wc1ab': tf.Variable(tf.random_normal([window, 1, num7, num7])),
-    '7_wc1ac': tf.Variable(tf.random_normal([1, window, num7, num7])),
-    '7_wc1ba': tf.Variable(tf.random_normal([1, 1, num6*4, num7])),
-    '7_wc1bb': tf.Variable(tf.random_normal([window/2, window/2, num7, num7])),
-    '7_wc1c': tf.Variable(tf.random_normal([1, 1, num6*4, num7])),
-    '7_wc1d': tf.Variable(tf.random_normal([1, 1, num6*4, num7])),
+    '7_wc1aa': tf.Variable(tf.random_normal([1, 1, num6*4, num7],0,2)),
+    '7_wc1ab': tf.Variable(tf.random_normal([window, 1, num7, num7],0,2)),
+    '7_wc1ac': tf.Variable(tf.random_normal([1, window, num7, num7],0,2)),
+    '7_wc1ba': tf.Variable(tf.random_normal([1, 1, num6*4, num7],0,2)),
+    '7_wc1bb': tf.Variable(tf.random_normal([window/2, window/2, num7, num7],0,2)),
+    '7_wc1c': tf.Variable(tf.random_normal([1, 1, num6*4, num7],0,2)),
+    '7_wc1d': tf.Variable(tf.random_normal([1, 1, num6*4, num7],0,2)),
 
-    '9_out2': tf.Variable(tf.random_normal([5,5,num6*4, 3]))   
+    '9_out2': tf.Variable(tf.random_normal([5,5,num5*4, 3]))   
 }
 
 biases = {
-    '1_bc1aa': tf.Variable(tf.random_normal([num1])),
-    '1_bc1ab': tf.Variable(tf.random_normal([num1])),
-    '1_bc1ac': tf.Variable(tf.random_normal([num1])),
-    '1_bc1ba': tf.Variable(tf.random_normal([num1])),
-    '1_bc1bb': tf.Variable(tf.random_normal([num1])),
-    '1_bc1c': tf.Variable(tf.random_normal([num1])),
-    '1_bc1d': tf.Variable(tf.random_normal([num1])),
+    '1_bc1aa': tf.Variable(tf.random_normal([num1],0,2)),
+    '1_bc1ab': tf.Variable(tf.random_normal([num1],0,2)),
+    '1_bc1ac': tf.Variable(tf.random_normal([num1],0,2)),
+    '1_bc1ba': tf.Variable(tf.random_normal([num1],0,2)),
+    '1_bc1bb': tf.Variable(tf.random_normal([num1],0,2)),
+    '1_bc1c': tf.Variable(tf.random_normal([num1],0,2)),
+    '1_bc1d': tf.Variable(tf.random_normal([num1],0,2)),
 
-    '2_bc1aa': tf.Variable(tf.random_normal([num2])),
-    '2_bc1ab': tf.Variable(tf.random_normal([num2])),
-    '2_bc1ac': tf.Variable(tf.random_normal([num2])),
-    '2_bc1ba': tf.Variable(tf.random_normal([num2])),
-    '2_bc1bb': tf.Variable(tf.random_normal([num2])),
-    '2_bc1c': tf.Variable(tf.random_normal([num2])),
-    '2_bc1d': tf.Variable(tf.random_normal([num2])),
+    '2_bc1aa': tf.Variable(tf.random_normal([num2],0,2)),
+    '2_bc1ab': tf.Variable(tf.random_normal([num2],0,2)),
+    '2_bc1ac': tf.Variable(tf.random_normal([num2],0,2)),
+    '2_bc1ba': tf.Variable(tf.random_normal([num2],0,2)),
+    '2_bc1bb': tf.Variable(tf.random_normal([num2],0,2)),
+    '2_bc1c': tf.Variable(tf.random_normal([num2],0,2)),
+    '2_bc1d': tf.Variable(tf.random_normal([num2],0,2)),
 
-    '3_bc1aa': tf.Variable(tf.random_normal([num3])),
-    '3_bc1ab': tf.Variable(tf.random_normal([num3])),
-    '3_bc1ac': tf.Variable(tf.random_normal([num3])),
-    '3_bc1ba': tf.Variable(tf.random_normal([num3])),
-    '3_bc1bb': tf.Variable(tf.random_normal([num3])),
-    '3_bc1c': tf.Variable(tf.random_normal([num3])),
-    '3_bc1d': tf.Variable(tf.random_normal([num3])),
+    '3_bc1aa': tf.Variable(tf.random_normal([num3],0,2)),
+    '3_bc1ab': tf.Variable(tf.random_normal([num3],0,2)),
+    '3_bc1ac': tf.Variable(tf.random_normal([num3],0,2)),
+    '3_bc1ba': tf.Variable(tf.random_normal([num3],0,2)),
+    '3_bc1bb': tf.Variable(tf.random_normal([num3],0,2)),
+    '3_bc1c': tf.Variable(tf.random_normal([num3],0,2)),
+    '3_bc1d': tf.Variable(tf.random_normal([num3],0,2)),
 
-    '4_bc1aa': tf.Variable(tf.random_normal([num4])),
-    '4_bc1ab': tf.Variable(tf.random_normal([num4])),
-    '4_bc1ac': tf.Variable(tf.random_normal([num4])),
-    '4_bc1ba': tf.Variable(tf.random_normal([num4])),
-    '4_bc1bb': tf.Variable(tf.random_normal([num4])),
-    '4_bc1c': tf.Variable(tf.random_normal([num4])),
-    '4_bc1d': tf.Variable(tf.random_normal([num4])),
+    '4_bc1aa': tf.Variable(tf.random_normal([num4],0,2)),
+    '4_bc1ab': tf.Variable(tf.random_normal([num4],0,2)),
+    '4_bc1ac': tf.Variable(tf.random_normal([num4],0,2)),
+    '4_bc1ba': tf.Variable(tf.random_normal([num4],0,2)),
+    '4_bc1bb': tf.Variable(tf.random_normal([num4],0,2)),
+    '4_bc1c': tf.Variable(tf.random_normal([num4],0,2)),
+    '4_bc1d': tf.Variable(tf.random_normal([num4],0,2)),
 
-    '5_bc1aa': tf.Variable(tf.random_normal([num5])),
-    '5_bc1ab': tf.Variable(tf.random_normal([num5])),
-    '5_bc1ac': tf.Variable(tf.random_normal([num5])),
-    '5_bc1ba': tf.Variable(tf.random_normal([num5])),
-    '5_bc1bb': tf.Variable(tf.random_normal([num5])),
-    '5_bc1c': tf.Variable(tf.random_normal([num5])),
-    '5_bc1d': tf.Variable(tf.random_normal([num5])),
+    '5_bc1aa': tf.Variable(tf.random_normal([num5],0,2)),
+    '5_bc1ab': tf.Variable(tf.random_normal([num5],0,2)),
+    '5_bc1ac': tf.Variable(tf.random_normal([num5],0,2)),
+    '5_bc1ba': tf.Variable(tf.random_normal([num5],0,2)),
+    '5_bc1bb': tf.Variable(tf.random_normal([num5],0,2)),
+    '5_bc1c': tf.Variable(tf.random_normal([num5],0,2)),
+    '5_bc1d': tf.Variable(tf.random_normal([num5],0,2)),
 
-    '6_bc1aa': tf.Variable(tf.random_normal([num6])),
-    '6_bc1ab': tf.Variable(tf.random_normal([num6])),
-    '6_bc1ac': tf.Variable(tf.random_normal([num6])),
-    '6_bc1ba': tf.Variable(tf.random_normal([num6])),
-    '6_bc1bb': tf.Variable(tf.random_normal([num6])),
-    '6_bc1c': tf.Variable(tf.random_normal([num6])),
-    '6_bc1d': tf.Variable(tf.random_normal([num6])),
+    '6_bc1aa': tf.Variable(tf.random_normal([num6],0,2)),
+    '6_bc1ab': tf.Variable(tf.random_normal([num6],0,2)),
+    '6_bc1ac': tf.Variable(tf.random_normal([num6],0,2)),
+    '6_bc1ba': tf.Variable(tf.random_normal([num6],0,2)),
+    '6_bc1bb': tf.Variable(tf.random_normal([num6],0,2)),
+    '6_bc1c': tf.Variable(tf.random_normal([num6],0,2)),
+    '6_bc1d': tf.Variable(tf.random_normal([num6],0,2)),
 
-    '7_bc1aa': tf.Variable(tf.random_normal([num7])),
-    '7_bc1ab': tf.Variable(tf.random_normal([num7])),
-    '7_bc1ac': tf.Variable(tf.random_normal([num7])),
-    '7_bc1ba': tf.Variable(tf.random_normal([num7])),
-    '7_bc1bb': tf.Variable(tf.random_normal([num7])),
-    '7_bc1c': tf.Variable(tf.random_normal([num7])),
-    '7_bc1d': tf.Variable(tf.random_normal([num7])),
+    '7_bc1aa': tf.Variable(tf.random_normal([num7],0,2)),
+    '7_bc1ab': tf.Variable(tf.random_normal([num7],0,2)),
+    '7_bc1ac': tf.Variable(tf.random_normal([num7],0,2)),
+    '7_bc1ba': tf.Variable(tf.random_normal([num7],0,2)),
+    '7_bc1bb': tf.Variable(tf.random_normal([num7],0,2)),
+    '7_bc1c': tf.Variable(tf.random_normal([num7],0,2)),
+    '7_bc1d': tf.Variable(tf.random_normal([num7],0,2)),
     
     '9_out2': tf.Variable(tf.random_normal([3]))
 }
@@ -537,8 +537,8 @@ text = ''
 
 for epoch in range(training_epochs):
     counter = 0
-    avg_cost = 0.
-    val_cost = 0.
+    avg_cost = []
+    val_cost = []
     train_acc = []
     val_acc = []
     total_batch = train_n#int(mnist.train.num_examples/batch_size)
@@ -552,7 +552,7 @@ for epoch in range(training_epochs):
             num = 8
         for batch in range(0,len(shuffle),num):
             batch_list = shuffle[batch:batch+num] 
-            counter += 8
+            counter += 1
             #print (i)
             batch_x = np.array([[data3_x[size][i]] for i in batch_list])
             batch_y = np.array([data3_y[size][i]for i in batch_list])
@@ -564,34 +564,35 @@ for epoch in range(training_epochs):
             pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,above_zero : batch_y_nan, ss_2d : batch_y_ss})
             train_acc += [accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0]),]
             # Compute average loss
-            avg_cost += c / total_batch
+            avg_cost += [c ,]
             #print (c)
             #print (c),
-            if counter%10000 == 888:
+            if counter%5000 == 9:
                 val_acc = []
-                print (i,train_n*avg_cost/(i+1),np.mean(train_acc))
+                print (i,np.mean(avg_cost),np.mean(train_acc))
                 for i in range(len(data2_x_val)):
                         batch_x, batch_y = np.array([[data2_x_val[i],],]),np.array([data2_y_val[i],])
                         batch_y_nan,batch_y_ss = np.array([data2_y_nan_val[i]]),np.array([data2_y_ss_val[i]])
                         batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
                         cost_i  = sess.run( cost, feed_dict={x: batch_x,resi_map0: batch_y,
                                                              above_zero : batch_y_nan, ss_2d : batch_y_ss})
-                        val_cost += cost_i/val_n
+                        val_cost += [cost_i,]
                         pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
                                                              above_zero : batch_y_nan, ss_2d : batch_y_ss})
                         val_acc += [accuracy(np.argmax(pred+np.transpose(pred,(0,2,1,3)),3)[0],np.argmax(batch_y,3)[0]),]
                 print (np.mean(val_acc))
     # Display logs per epoch step
     f1 = open('updates.log','w')
-    text += str(avg_cost)+'  '+str(np.mean(train_acc))+'\n'
-    text += str(val_cost)+'  '+str(np.mean(val_acc))+'\n\n'
+    text += str(np.mean(avg_cost))+'  '+str(np.mean(train_acc))+'\n'
+    text += str(np.mean(val_cost))+'  '+str(np.mean(val_acc))+'\n\n'
     print ("Epoch:", '%04d' % (epoch+1), "cost=", 
-            "{:.9f}".format(avg_cost),np.mean(train_acc))
+            "{:.9f}".format(np.mean(avg_cost)),np.mean(train_acc))
     print ("Epoch:", '%04d' % (epoch+1), "cost=", 
-            "{:.9f}".format(val_cost),np.mean(val_acc))
+            "{:.9f}".format(np.mean(val_cost)),np.mean(val_acc))
     f1.write(text)
     f1.close()
-    save_path = saver.save(sess,'model300_reweigh_loss.ckpt')
+    save_path = saver.save(sess,'models/model_%s_%s_%s.ckpt' \
+                           %(epoch,np.round(np.mean(train_acc),2),np.round(np.mean(val_acc),2)))
     result[epoch] = [avg_cost,val_cost]
     pred = sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
                                              above_zero : batch_y_nan, ss_2d : batch_y_ss})

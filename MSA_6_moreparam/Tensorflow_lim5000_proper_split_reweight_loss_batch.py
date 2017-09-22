@@ -30,10 +30,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 #data = np.load('../../../../data_all.npy.zip')['data_all'].item()
-data1 = np.load('../data_lim5000_nan.npy.zip')['data_lim5000_nan.npy'].item()
-data2 = np.load('../data_lim5000_ss.npy.zip')['data_lim5000_ss'].item()
-data3 = np.load('../data_lim5000_extra.npy').item()
-data4 = np.load('../data_lim5000_MSA.npy').item()
+data1 = np.load('../data_lim5000_nan_excludeTest.npy.zip')['data_lim5000_nan_excludeTest.npy'].item() #contains 480 train examples
+data2 = np.load('../data_lim5000_ss_excludeTest.npy.zip')['data_lim5000_ss_excludeTest.npy'].item() #might have 494
+data3 = np.load('../data_lim5000_extra_excludeTest.npy').item() #might have 494
+data4 = np.load('../data_lim5000_MSA_excludeTest.npy').item() #might have 494
 
 data_train = {}
 data_val = {}
@@ -94,7 +94,7 @@ for i in data1_keys_train:
                 tempF = np.concatenate((np.array(make_array(temp1[1])).T,np.array([temp2[1]]),temp3,(np.array(make_array(temp4[1])).T),np.array([make_array2(temp4[2])])))
                     #         [9-features, seq, exxist_seq, cat dist_map,cat dist_map (non-zero), ss_1d, ss_2d]
                 #data[i] = [tempF, temp1[0],temp1[1],temp_resi_map,d,temp2[1],temp2[0]]
-                for window_tup in [(35,1),(50,2),(75,3),(100,4),(150,6),(200,8),(300,12),(400,16),(800,32)]:
+                for window_tup in [(35,3),(50,3),(75,3),(100,3),(150,3),(200,3),(300,3),(400,3),(800,3)]:
                     window, jump = window_tup[0], window_tup[1]
                     for repeat in range(0,len(data1[i][0]) - window+1,jump):
                         if np.mean(d[repeat:repeat+window,repeat:repeat+window,:]) > 0.9: 
