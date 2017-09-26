@@ -41,8 +41,7 @@ data2 = np.load('../data_lim5000_ss_excludeTest.npy.zip')['data_lim5000_ss_exclu
 data3 = np.load('../data_lim5000_extra_excludeTest.npy').item() #might have 494
 data4 = np.load('../data_lim5000_MSA_excludeTest.npy').item() #might have 494
 
-data_train = {}
-data_val = {}
+
 '''
 v5 - make 3 classes, <8 , >=8 & <=15 , >=15
 

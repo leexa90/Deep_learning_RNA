@@ -500,28 +500,8 @@ init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)
 saver.restore(sess,'./model300_reweigh_loss.ckpt')
-ALL= []
-for i in sorted(weights):
-    temp_w = sess.run(weights[i])
-    temp_w = np.reshape(temp_w,temp_w.shape[0]*temp_w.shape[1]*temp_w.shape[3]*temp_w.shape[2])
-    ALL += list(temp_w)
-    if i[0] == '1' and  weights[i].shape[1] == 1 and weights[i].shape[2] ==1 :
-        fig, ax = plt.subplots()
-        temp_w = sess.run(weights[i])
-        temp_w = np.swapaxes(temp_w,1,3)
-        cax = ax.imshow(temp_w[:,:,0,0])
-        print (temp_w[:,:,0,0])
-        cbar = fig.colorbar(cax, ticks=[-2,-1, 0, 1,2])
-        plt.savefig('./weights/'+i+'.png')
-        #plt.show()
-        plt.clf()
-
-
-        
-
 # Training cycle
 result = {}
-val_result = {}
 random.seed(0)
 shuffle = range(len(data2_x))
 random.shuffle(shuffle)
@@ -552,23 +532,21 @@ for epoch in range(training_epochs):
         avg_cost += c / total_batch
         #print (c)
         #print (c),
-    if True:
-        val_acc = []
-        for i in range(len(data2_x_val)):
-                batch_x, batch_y = np.array([[data2_x_val[i],],]),np.array([data2_y_val[i],])
-                batch_y_nan,batch_y_ss = np.array([data2_y_nan_val[i]]),np.array([data2_y_ss_val[i]])
-                batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
-                cost_i  = sess.run( cost, feed_dict={x: batch_x,resi_map0: batch_y,
-                                                     above_zero : batch_y_nan, ss_2d : batch_y_ss})
-                val_cost += cost_i/val_n
-                pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
-                                                     above_zero : batch_y_nan, ss_2d : batch_y_ss})
-                
-                val_acc += [accuracy(np.argmax(pred+np.transpose(pred,(0,2,1,3)),3)[0],np.argmax(batch_y,3)[0]),]
-                val_result[data2_name_val[i]] = [np.argmax(pred+np.transpose(pred,(0,2,1,3)),3)[0],batch_y[0]]
-                print (data2_name_val[i],val_acc[-1],batch_y.shape)
-        
-        print (np.mean(val_acc))
+        if counter%1000 == 999:
+            val_acc = []
+            print (i,train_n*avg_cost/(i+1),np.mean(train_acc))
+            for i in range(len(data2_x_val))[-3:-2]:
+                    batch_x, batch_y = np.array([[data2_x_val[i],],]),np.array([data2_y_val[i],])
+                    batch_y_nan,batch_y_ss = np.array([data2_y_nan_val[i]]),np.array([data2_y_ss_val[i]])
+                    batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
+                    cost_i  = sess.run( cost, feed_dict={x: batch_x,resi_map0: batch_y,
+                                                         above_zero : batch_y_nan, ss_2d : batch_y_ss})
+                    val_cost += cost_i/val_n
+                    pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
+                                                         above_zero : batch_y_nan, ss_2d : batch_y_ss})
+                    val_acc += [accuracy(np.argmax(pred+np.transpose(pred,(0,2,1,3)),3)[0],np.argmax(batch_y,3)[0]),]
+                    print (data2_name_val[i],val_acc[-1],batch_y.shape)
+            print (np.mean(val_acc))
     # Display logs per epoch step
     text += str(avg_cost)+'  '+str(np.mean(train_acc))+'\n'
     text += str(val_cost)+'  '+str(np.mean(val_acc))+'\n\n'

@@ -35,6 +35,20 @@ data2 = np.load('../data_lim5000_ss_excludeTest.npy.zip')['data_lim5000_ss_exclu
 data3 = np.load('../data_lim5000_extra_excludeTest.npy').item() #might have 494
 data4 = np.load('../data_lim5000_MSA_excludeTest.npy').item() #might have 494
 
+data1_t = np.load('../data_lim5000_nan.npy.zip')['data_lim5000_nan.npy'].item()
+data2_t = np.load('../data_lim5000_ss.npy.zip')['data_lim5000_ss'].item()
+data3_t = np.load('../data_lim5000_extra.npy').item()
+data4_t = np.load('../data_lim5000_MSA.npy').item()
+
+puzzle = ['3OX0', '3OWZ', '3OXJ', '3OXE', '3OWZ', '3OWW', '3OXM', '3OWW', '3OWI', '3OXE',
+          '3OXM', '3OX0', '3OXJ', '3OWI', '3OXB', '3OXD', '3OXD', '3OXB', '4LCK', '4TZV',
+          '4TZZ', '4TZZ', '4TZZ', '4LCK', '4TZZ', '4TZP', '4TZW', '4TZP', '4TZZ', '4TZZ',
+          '4TZV', '4TZW', '4TZZ', '4LCK', '4TZZ', '4TZP', '4LCK', '4TZP', '5EAQ', '5DQK',
+          '5EAO', '5DH6', '5DI2', '5DH8', '5DH7', '5DI4', '4R4V', '5V3I', '4R4P', '3V7E',
+          '3V7E', '4L81', '4OQU', '4P9R', '4P95', '4QLM', '4QLN', '4XWF', '4XW7', '4GXY',
+          '5DDO', '5DDO', '5TPY']
+
+data_test = {}
 data_train = {}
 data_val = {}
 '''
@@ -78,6 +92,7 @@ data1_keys = [x for x in data1 if  len(data1[x][0]) <= 500] # the short ones get
 random.shuffle(data1_keys)
 data1_keys_train = data1_keys[0::3] + data1_keys[1::3] + [x for x in data1 if  len(data1[x][0]) > 500]
 data1_keys_val = data1_keys[2::3]
+data1_keys_test = [ x for x in data1_t if x[0:4].upper() in puzzle]
 for i in data1_keys_train:
     if len(data1[i][0]) >= 35:
         if i in data2.keys():
@@ -115,7 +130,7 @@ for i in data1_keys_val:
                 temp1 = data1[i]
                 a,b,c = (data1[i][2] < 8)*1,(data1[i][2] <= 15) & (data1[i][2] >= 8)*1,(data1[i][2] > 15)*1
                 temp_resi_map = np.stack((a,b,c),axis=2)
-                d = -1*(np.isnan(data1[i][2])-1) #non-nan values ==1 , nan =0
+                d = -1*(np.isnan(data1_t[i][2])-1) #non-nan values ==1 , nan =0
                 d = np.stack((d,d,d),axis=2)
                 
                 temp2 = data2[i]
@@ -126,6 +141,25 @@ for i in data1_keys_val:
                 data_val[i] = [tempF, temp1[0],temp1[1],temp_resi_map,d,temp2[1],temp2[0]]
             except ValueError:
                 print ('%s had ValueError, probably some of inputs are of wrong dimention. Data thrown away ' %i)
+for i in data1_keys_test:
+    if len(data1_t[i][0]) >= 35:
+        if i in data2_t.keys():
+            try:
+                temp1 = data1_t[i]
+                a,b,c = (data1_t[i][2] < 8)*1,(data1_t[i][2] <= 15) & (data1_t[i][2] >= 8)*1,(data1_t[i][2] > 15)*1
+                temp_resi_map = np.stack((a,b,c),axis=2)
+                d = -1*(np.isnan(data1_t[i][2])-1) #non-nan values ==1 , nan =0
+                d = np.stack((d,d,d),axis=2)
+                
+                temp2 = data2_t[i]
+                temp3 = data3_t[i]
+                temp4 = data4_t[i]
+                tempF = np.concatenate((np.array(make_array(temp1[1])).T,np.array([temp2[1]]),temp3,(np.array(make_array(temp4[1])).T),np.array([make_array2(temp4[2])])))
+                    #         [9-features, seq, exxist_seq, cat dist_map,cat dist_map (non-zero), ss_1d, ss_2d]
+                data_test[i] = [tempF, temp1[0],temp1[1],temp_resi_map,d,temp2[1],temp2[0]]
+            except ValueError:
+                print ('%s had ValueError, probably some of inputs are of wrong dimention. Data thrown away ' %i)
+
                 
 val_n = len(data_val) 
 print ('training samples %s from %s PDBid, val samples %s from %s PDBid' %(train_n,len(data1_keys_train),val_n,len(data1_keys_val)))            
@@ -167,6 +201,24 @@ weight_coeff3 = weight3 / (weight1+weight2+weight3)
 print ('Class 1 has %s percent, given %s weight' % (weight1**-1, weight_coeff1))
 print ('Class 2 has %s percent, given %s weight' % (weight2**-1, weight_coeff2))
 print ('Class 3 has %s percent, given %s weight' % (weight3**-1, weight_coeff3))
+# making a batch 
+data3_x = {}
+data3_y = {}
+data3_y_nan = {}
+data3_y_ss = {}
+data3_name = {}
+for i,j in [(35,1),(50,1),(75,1),(100,1),(150,1),(200,1),(300,1),(400,1),(800,1)]:
+    data3_x[i] = []
+    data3_y[i] = []
+    data3_y_nan[i] = []
+    data3_y_ss[i] = []
+    data3_name[i] = []
+    for k in [l for l in range(len(data2_name)) if int(data2_name[l].split('_')[2] ) ==i]:
+            data3_x[i] += [data2_x[k],]
+            data3_y[i] += [data2_y[k],]
+            data3_y_nan[i] += [data2_y_nan[k],]
+            data3_y_ss[i] += [data2_y_ss[k],]
+            data3_name[i] += [data2_name[k],]
 # initialzie val data here
 data2_x_val = []
 data2_y_val = []
@@ -180,13 +232,25 @@ for i in data_val:
         data2_y_ss_val += [data_val[i][-1],]
         data2_name_val += [i,]
 print (len(data2_y),'finished intitialising total number of training/val samples')
+# initialzie test data here
+data2_x_test = []
+data2_y_test = []
+data2_y_nan_test = []
+data2_y_ss_test = []
+data2_name_test = []       
+for i in data_test:
+        data2_x_test += [data_test[i][0],]
+        data2_y_test += [data_test[i][3],]
+        data2_y_nan_test += [data_test[i][-3],]
+        data2_y_ss_test += [data_test[i][-1],]
+        data2_name_test += [i,]
 #data2_y = np.array(data2_y)
 #data2_x = np.array(data2_x)
 # Create some wrappers for simplicity
 print  (data2_name_val  )
 epsilon = 1e-3
 def batch_normalization(x):
-    mean,var = tf.nn.moments(x,[1,2])
+    mean,var = tf.nn.moments(x,[0,1,2])
     scale = tf.Variable(tf.ones([x.shape[-1]]))
     beta = tf.Variable(tf.zeros([x.shape[-1]]))
     x = tf.nn.batch_normalization(x,mean,var,beta,scale,epsilon)
@@ -487,11 +551,13 @@ optimizer = tf.train.AdamOptimizer(epsilon = 0.0001,learning_rate=learning_rate)
 def accuracy(mat_model,answer):
     score = [[],[],[]]
     for i in range(0,answer.shape[1]):
-        for j in range(i+1,answer.shape[1]):
-            if answer[i,j] == mat_model[i,j]:
-                score[answer[i,j]] += [1,]
-            else:
-                score[answer[i,j]] += [0,]
+        if np.sum(answer[i,:]) != 0:
+            for j in range(i+1,answer.shape[1]):
+                if np.sum(answer[j,:]) != 0:
+                    if answer[i,j] == mat_model[i,j]:
+                        score[answer[i,j]] += [1,]
+                    else:
+                        score[answer[i,j]] += [0,]
     return np.mean([np.mean(score[0]),np.mean(score[1]),np.mean(score[2])])
 
 saver = tf.train.Saver()
@@ -499,7 +565,8 @@ saver = tf.train.Saver()
 init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)
-#saver.restore(sess,'./model300_reweigh_loss.ckpt')
+saver.restore(sess,'./model300_reweigh_loss_9_78.ckpt')
+
 # Training cycle
 result = {}
 random.seed(0)
@@ -508,55 +575,72 @@ random.shuffle(shuffle)
 text = ''
 for epoch in range(training_epochs):
     counter = 0
-    avg_cost = 0.
-    val_cost = 0.
+    avg_cost = []
+    val_cost = []
+    test_cost = []
     train_acc = []
     val_acc = []
+    test_acc = []
     total_batch = train_n#int(mnist.train.num_examples/batch_size)
     # Loop over all batches
-    for i in shuffle:
-        counter += 1
-        #print (i)
-        batch_x, batch_y = np.array([[data2_x[i],],]),np.array([data2_y[i],])
-        batch_y_nan,batch_y_ss = np.array([data2_y_nan[i]]),np.array([data2_y_ss[i]])
-        batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
-        # Run optimization op (backprop) and cost op (to get loss value)
-        _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,
-                                                      resi_map0: batch_y,
-                                                      above_zero : batch_y_nan,
-                                                      ss_2d : batch_y_ss})
-        pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
-                                             above_zero : batch_y_nan, ss_2d : batch_y_ss})
-        train_acc += [accuracy(np.argmax(pred,3)[0],np.argmax(batch_y,3)[0]),]
-        # Compute average loss
-        avg_cost += c / total_batch
-        #print (c)
-        #print (c),
-        if counter%1000 == 999:
-            val_acc = []
-            print (i,train_n*avg_cost/(i+1),np.mean(train_acc))
-            for i in range(len(data2_x_val)):
-                    batch_x, batch_y = np.array([[data2_x_val[i],],]),np.array([data2_y_val[i],])
-                    batch_y_nan,batch_y_ss = np.array([data2_y_nan_val[i]]),np.array([data2_y_ss_val[i]])
-                    batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
-                    cost_i  = sess.run( cost, feed_dict={x: batch_x,resi_map0: batch_y,
-                                                         above_zero : batch_y_nan, ss_2d : batch_y_ss})
-                    val_cost += cost_i/val_n
-                    pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
-                                                         above_zero : batch_y_nan, ss_2d : batch_y_ss})
-                    val_acc += [accuracy(np.argmax(pred+np.transpose(pred,(0,2,1,3)),3)[0],np.argmax(batch_y,3)[0]),]
-            print (np.mean(val_acc))
+    for size in sorted(data3_x.keys()):
+        shuffle = range(len(data3_x[size]))
+        random.shuffle(shuffle)
+        if size >=400:
+            num = 1
+        else:
+            num = 8
+        for batch in range(0,len(shuffle),num)[0:5]:
+            batch_list = shuffle[batch:batch+num] 
+            counter += 1
+            #print (i)
+            batch_x = np.array([[data3_x[size][i]] for i in batch_list])
+            batch_y = np.array([data3_y[size][i]for i in batch_list])
+            batch_y_nan = np.array([data3_y_nan[size][i]  for i in batch_list])
+            batch_y_ss = np.array([data3_y_ss[size][i]  for i in batch_list ])
+            batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
+            # Run optimization op (backprop) and cost op (to get loss value)
+            _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,resi_map0: batch_y,above_zero : batch_y_nan,ss_2d : batch_y_ss})
+            pred = sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,above_zero : batch_y_nan, ss_2d : batch_y_ss})
+            for k in range(len(batch_y)):
+                train_acc += [accuracy(np.argmax(pred[k],2),np.argmax(batch_y[k],2)),]
+            # Compute average loss
+            avg_cost += [c,]
+    if True:
+        val_acc = []
+        for i in range(len(data2_x_val)):
+                batch_x, batch_y = np.array([[data2_x_val[i],],]),np.array([data2_y_val[i],])
+                batch_y_nan,batch_y_ss = np.array([data2_y_nan_val[i]]),np.array([data2_y_ss_val[i]])
+                batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
+                cost_i  = sess.run( cost, feed_dict={x: batch_x,resi_map0: batch_y,
+                                                     above_zero : batch_y_nan, ss_2d : batch_y_ss})
+                val_cost += [cost_i,]
+                pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
+                                                     above_zero : batch_y_nan, ss_2d : batch_y_ss})
+                val_acc += [accuracy(np.argmax(pred+np.transpose(pred,(0,2,1,3)),3)[0],np.argmax(batch_y,3)[0]),]
+        test_acc = []
+        for i in range(len(data2_x_test)):
+                batch_x, batch_y = np.array([[data2_x_test[i],],]),np.array([data2_y_test[i],])
+                batch_y_nan,batch_y_ss = np.array([data2_y_nan_test[i]]),np.array([data2_y_ss_test[i]])
+                batch_x = np.swapaxes(np.swapaxes(batch_x,1,3),1,2)
+                cost_i  = sess.run( cost, feed_dict={x: batch_x,resi_map0: batch_y,
+                                                     above_zero : batch_y_nan, ss_2d : batch_y_ss})
+                test_cost += [cost_i,]
+                pred =sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
+                                                     above_zero : batch_y_nan, ss_2d : batch_y_ss})
+                test_acc += [accuracy(np.argmax(pred+np.transpose(pred,(0,2,1,3)),3)[0],np.argmax(batch_y,3)[0]),]
+        print (np.mean(test_acc))
     # Display logs per epoch step
     f1 = open('updates.log','w')
-    text += str(avg_cost)+'  '+str(np.mean(train_acc))+'\n'
-    text += str(val_cost)+'  '+str(np.mean(val_acc))+'\n\n'
+    text += str(np.mean(avg_cost))+'  '+str(np.mean(train_acc))+'\n'
+    text += str(np.mean(val_cost))+'  '+str(np.mean(val_acc))+'\n\n'
     print ("Epoch:", '%04d' % (epoch+1), "cost=", 
-            "{:.9f}".format(avg_cost),np.mean(train_acc))
+            "{:.9f}".format(np.mean(avg_cost)),np.mean(train_acc))
     print ("Epoch:", '%04d' % (epoch+1), "cost=", 
-            "{:.9f}".format(val_cost),np.mean(val_acc))
+            "{:.9f}".format(np.mean(val_cost)),np.mean(val_acc))
     f1.write(text)
     f1.close()
-    save_path = saver.save(sess,'model300_reweigh_loss.ckpt')
+    save_path = saver.save(sess,'model300_reweigh_loss_%s_%s.ckpt' %(epoch,int(100*np.mean(val_acc))))
     result[epoch] = [avg_cost,val_cost]
     pred = sess.run( out_softmax, feed_dict={x: batch_x,resi_map0: batch_y,
                                              above_zero : batch_y_nan, ss_2d : batch_y_ss})
